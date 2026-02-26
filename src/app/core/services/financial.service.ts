@@ -1,29 +1,27 @@
 import { Injectable } from '@angular/core';
-import { Table } from '../../models/table.model';
 import { DataTable } from '../../models/data-table.model';
+import { Table } from '../../models/table.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class FinancialService {
-
-  private getKey(table: Table): string {
-    // Se não houver name definido, usa 'default'
-    return `financial_${table.name ?? 'default'}`;
+  private getKey(ticker: string): string {
+    return `financial_${ticker}`;
   }
 
-  getData(table: Table): DataTable[] {
-    const data = localStorage.getItem(this.getKey(table));
-    return data ? JSON.parse(data) : [];
+  createTable(): any {
+    localStorage.setItem('financial_MXRF11', JSON.stringify(new Table()));
+
+    return true;
   }
 
-  saveData(table: Table, entries: DataTable[]): void {
-    localStorage.setItem(this.getKey(table), JSON.stringify(entries));
+  getData(name_table: string): Table {
+    const data = localStorage.getItem(this.getKey(name_table));
+    return data ? JSON.parse(data) : new Table();
   }
 
-  addEntry(table: Table, entry: DataTable): void {
-    const data = this.getData(table);
-    data.push(entry);
-    this.saveData(table, data);
+  saveData(name_table: string, entries: Table): void {
+    localStorage.setItem(this.getKey(name_table), JSON.stringify(entries));
   }
 }

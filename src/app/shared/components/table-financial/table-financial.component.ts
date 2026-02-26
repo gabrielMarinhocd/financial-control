@@ -29,10 +29,12 @@ export class TableFinancialComponent implements OnChanges {
     'purchased_quotas_proven',
     'value_purchased_quotas_proven',
     'accumulated_value_month',
-    'edit',
   ];
 
+  tableColumns: string[] = [];
+
   isAdding = false;
+  isUpdate = false;
   newRow!: DataTable;
 
   constructor(private financialService: FinancialService) {}
@@ -42,33 +44,56 @@ export class TableFinancialComponent implements OnChanges {
       if (!this.data.data) {
         this.data.data = [];
       } else {
-        // Carregar do localStorage se houver dados salvos
-        this.data.data = this.financialService.getData(this.data);
+        this.data = this.financialService.getData(this.data.name!);
       }
     }
+
+    this.tableColumns = ['actions', ...this.displayedColumns];
   }
 
-  add() {
-    this.isAdding = true;
-    this.newRow = new DataTable();
-    this.data.data = [this.newRow, ...this.data.data!];
-  }
+  changeAction() {
+    if (this.isUpdate) {
+      const itemIndex = this.data.data!.findIndex((a) => a.id === this.newRow.id);  
 
-  save() {
-    this.isAdding = false;
+      if (itemIndex !== -1) {
 
-    if (this.newRow) {
-      // Salvar no localStorage via serviço
-      this.financialService.addEntry(this.data, this.newRow);
+        this.data.data![itemIndex] = this.newRow;
+      } else {
+        this.data.data!.push(this.newRow);
+      }
+    } else {
+      this.isAdding = true;
+      this.newRow = new DataTable();
+      this.data.data = [this.newRow, ...this.data.data!]; 
     }
   }
 
-  cancel() {
-    this.data.data = this.data.data?.filter((r) => r !== this.newRow);
+  save(row?: DataTable) {
+    this.isAdding = false;
+    const target = row || this.newRow;
+    if (target) {
+      this.financialService.saveData(this.data.name!, this.data);
+    }
+  }
+
+  cancel(row?: DataTable) {
+    const target = row || this.newRow;
+    this.data.data = this.data.data?.filter((r) => r !== target);
     this.isAdding = false;
   }
 
   isEditing(row: DataTable): boolean {
     return this.isAdding && row === this.newRow;
+  }
+
+  edit(row: DataTable) {
+    this.isAdding = true;
+    this.isUpdate = true;
+    this.newRow = row;
+  }
+
+  delete(row: DataTable) {
+    this.data.data = this.data.data?.filter((r) => r !== row);
+    this.save(this.data);
   }
 }

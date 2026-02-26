@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TableFinancialComponent } from '../../shared/components/table-financial/table-financial.component';
 import { DataTable } from '../../models/data-table.model';
@@ -12,28 +12,41 @@ import { Table } from '../../models/table.model';
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
 })
-export class DashboardComponent {
-  mxrf11: Table = new Table(
-    1,
-    'MXRF11',
-    "Fundo Imobiliario", // describe
-    undefined, // columns
-    [
-      new DataTable(
-        '2026-02-01', // date
-        1, // sequencial_month
-        '208', // quotas_start_month
-        9.4, // quotas_value
-        0.10, // unit_proven
-        18, // purchased_quotas
-        169.20, // value_purchased_quotas
-        20.80, // month_value_provent
-        2, // purchased_quotas_proven
-        18.8, // value_purchased_quotas_proven
-        1955.20, // accumulated_value_month
-        1 // active
-      ),
-    ],
-    1
-  );
+export class DashboardComponent implements OnInit {
+  mxrf11: any;
+
+  ngOnInit(): void {
+    const storedData = localStorage.getItem('financial_MXRF11');
+    
+    if (storedData) {
+      this.mxrf11 = new Table().transform(JSON.parse(storedData));
+    } else {
+      this.mxrf11 = new Table(
+        1,
+        'MXRF11',
+        'Fundo Imobiliario',
+        undefined, 
+        [
+          new DataTable(
+            1,
+            '2026-02-01',
+            1,
+            '208',
+            9.4,
+            0.10,
+            18,
+            169.20,
+            20.80,
+            2,
+            18.8,
+            1955.20,
+            1
+          ),
+        ],
+        1
+      );
+      
+      localStorage.setItem('financial_MXRF11', JSON.stringify(this.mxrf11));
+    }
+  }
 }

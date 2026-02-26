@@ -1,5 +1,6 @@
 export class DataTable {
   constructor(
+    public id?: number,
     public date?: string,
     public sequencial_month?: number,
     public quotas_start_month?: string,
@@ -16,6 +17,7 @@ export class DataTable {
 
   transform(dados: any): DataTable {
     if (dados) {
+      this.id = dados.id;
       this.date = dados.date;
       this.sequencial_month = dados.sequencial_month;
       this.quotas_start_month = dados.quotas_start_month;
