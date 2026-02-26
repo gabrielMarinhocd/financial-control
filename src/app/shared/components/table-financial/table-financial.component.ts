@@ -5,20 +5,16 @@ import { FormsModule } from '@angular/forms';
 import { DataTable } from '../../../models/data-table.model';
 import { Table } from '../../../models/table.model';
 import { MaterialModule } from '../../material/material.module';
+import { FinancialService } from '../../../core/services/financial.service';
 
 @Component({
   selector: 'app-table-financial',
   standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule,
-    MaterialModule
-  ],
+  imports: [CommonModule, FormsModule, MaterialModule],
   templateUrl: './table-financial.component.html',
   styleUrls: ['./table-financial.component.scss'],
 })
 export class TableFinancialComponent implements OnChanges {
-
   @Input() data: Table = new Table();
 
   displayedColumns: string[] = [
@@ -33,16 +29,21 @@ export class TableFinancialComponent implements OnChanges {
     'purchased_quotas_proven',
     'value_purchased_quotas_proven',
     'accumulated_value_month',
-    'edit'
+    'edit',
   ];
 
   isAdding = false;
   newRow!: DataTable;
 
+  constructor(private financialService: FinancialService) {}
+
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['data']) {
       if (!this.data.data) {
         this.data.data = [];
+      } else {
+        // Carregar do localStorage se houver dados salvos
+        this.data.data = this.financialService.getData(this.data);
       }
     }
   }
@@ -55,10 +56,15 @@ export class TableFinancialComponent implements OnChanges {
 
   save() {
     this.isAdding = false;
+
+    if (this.newRow) {
+      // Salvar no localStorage via serviço
+      this.financialService.addEntry(this.data, this.newRow);
+    }
   }
 
   cancel() {
-    this.data.data = this.data.data?.filter(r => r !== this.newRow);
+    this.data.data = this.data.data?.filter((r) => r !== this.newRow);
     this.isAdding = false;
   }
 
