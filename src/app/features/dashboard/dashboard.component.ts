@@ -24,7 +24,7 @@ export class DashboardComponent implements OnInit {
       this.mxrf11 = new Table(
         1,
         'MXRF11',
-        'Fundo Imobiliario',
+        'Teste Inicial',
         undefined, 
         [
           new DataTable(
