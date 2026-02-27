@@ -29,11 +29,11 @@ mat-card-header {
   white-space: nowrap;
 }
 
+/* ===== CAMPOS COMPACTOS ===== */
 .compact-field {
-  width: 110px;
+  width: 60px;
   margin: 0;
-
-  --mdc-outlined-text-field-container-height: 24px;
+  --mdc-outlined-text-field-container-height: 22px;
 }
 
 .compact-field .mat-mdc-form-field-wrapper,
@@ -42,7 +42,7 @@ mat-card-header {
   padding: 0 !important;
   margin: 0 !important;
   min-height: unset !important;
-  height: 24px !important;
+  height: 22px !important;
   align-items: center !important;
 }
 
@@ -50,15 +50,17 @@ mat-card-header {
   padding: 0 2px !important;
   margin: 0 !important;
   height: 20px !important;
-  font-size: 12px;
+  font-size: 11px;
   line-height: 1;
+  text-align: right; /* alinhamento para números */
 }
 
 .compact-field .mat-mdc-select-trigger {
   padding: 0 2px !important;
-  font-size: 12px;
+  font-size: 11px;
   height: 20px !important;
   line-height: 1;
+  text-align: right;
 }
 
 .compact-field .mat-mdc-form-field-subscript-wrapper {
@@ -72,6 +74,7 @@ tr.mat-row:hover {
 .mat-elevation-z8 {
   overflow-x: auto;
 }
+
 .financial-card {
   padding: 0.5rem 1rem;
   border-radius: 8px;
@@ -110,8 +113,8 @@ button[mat-mini-fab] {
 /* ===== MOBILE ===== */
 @media (max-width: 768px) {
   .compact-field {
-    width: 90px;
-    --mdc-outlined-text-field-container-height: 22px;
+    width: 50px; 
+    --mdc-outlined-text-field-container-height: 20px;
   }
 
   .mat-header-cell,
@@ -121,7 +124,7 @@ button[mat-mini-fab] {
 
   .compact-field input.mat-mdc-input-element,
   .compact-field .mat-mdc-select-trigger {
-    font-size: 11px;
+    font-size: 10px;
     height: 18px;
   }
 
