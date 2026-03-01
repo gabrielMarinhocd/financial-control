@@ -1,0 +1,22 @@
+:host {
+  display: block;
+}
+
+mat-dialog-content {
+  padding: 24px 32px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 24px 32px;
+  width: 100%;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+mat-dialog-actions {
+  padding: 16px 32px 24px 32px;
+}

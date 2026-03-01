@@ -1,19 +1,18 @@
 <div class="financial-header container">
   <div class="financial-title">
     {{ data.name || "" }}
-    <span *ngIf="this.isMobile">
+    <span *ngIf="isMobile">
       <span class="white">-</span>
       {{ data.describe }}
     </span>
   </div>
 
   <button
-    *ngIf="!isAdding"
     mat-mini-fab
     color="primary"
-    aria-label="Adicionar nova linha"
-    (click)="changeAction()"
-    matTooltip="Adicionar nova linha"
+    aria-label="Adicionar registro"
+    (click)="add()"
+    matTooltip="Adicionar registro"
     matTooltipPosition="above"
   >
     <mat-icon>add</mat-icon>
@@ -22,68 +21,40 @@
 
 <div class="mat-elevation-z8 container">
   <table mat-table [dataSource]="dataSource" matSort #sort="matSort">
+    ```
     <!-- ACTIONS -->
     <ng-container matColumnDef="actions">
       <th mat-header-cell *matHeaderCellDef></th>
+
       <td mat-cell *matCellDef="let row">
-        <ng-container *ngIf="isEditing(row); else viewActions">
-          <button
-            mat-icon-button
-            color="primary"
-            (click)="save(row)"
-            matTooltip="Salvar alterações"
-            matTooltipPosition="above"
-          >
-            <mat-icon>save</mat-icon>
-          </button>
+        <button
+          mat-icon-button
+          color="primary"
+          (click)="edit(row)"
+          matTooltip="Editar registro"
+          matTooltipPosition="above"
+        >
+          <mat-icon>edit</mat-icon>
+        </button>
 
-          <button
-            mat-icon-button
-            color="warn"
-            (click)="cancel(row)"
-            matTooltip="Cancelar edição"
-            matTooltipPosition="above"
-          >
-            <mat-icon>close</mat-icon>
-          </button>
-        </ng-container>
-
-        <ng-template #viewActions>
-          <button
-            mat-icon-button
-            color="primary"
-            (click)="edit(row)"
-            matTooltip="Editar registro"
-            matTooltipPosition="above"
-          >
-            <mat-icon>edit</mat-icon>
-          </button>
-
-          <button
-            mat-icon-button
-            color="warn"
-            (click)="delete(row)"
-            matTooltip="Excluir registro"
-            matTooltipPosition="above"
-          >
-            <mat-icon>delete</mat-icon>
-          </button>
-        </ng-template>
+        <button
+          mat-icon-button
+          color="warn"
+          (click)="delete(row)"
+          matTooltip="Excluir registro"
+          matTooltipPosition="above"
+        >
+          <mat-icon>delete</mat-icon>
+        </button>
       </td>
     </ng-container>
 
-    <!-- DATE -->
+    <!-- DATA -->
     <ng-container matColumnDef="date">
       <th mat-header-cell *matHeaderCellDef mat-sort-header="date">Data</th>
+
       <td mat-cell *matCellDef="let row">
-        <ng-container *ngIf="isEditing(row); else viewDate">
-          <mat-form-field appearance="outline" class="compact-field">
-            <input matInput type="date" [(ngModel)]="row.date" />
-          </mat-form-field>
-        </ng-container>
-        <ng-template #viewDate>
-          {{ row.date ? (row.date | date: "dd/MM/yyyy") : "-" }}
-        </ng-template>
+        {{ row.date ? (row.date | date : "dd/MM/yyyy") : "-" }}
       </td>
     </ng-container>
 
@@ -92,32 +63,24 @@
       <th mat-header-cell *matHeaderCellDef mat-sort-header="sequencial_month">
         Mês Seq.
       </th>
+
       <td mat-cell *matCellDef="let row">
-        <ng-container *ngIf="isEditing(row); else viewSequencial">
-          <mat-form-field class="compact-field">
-            <input matInput type="number" [(ngModel)]="row.sequencial_month" />
-          </mat-form-field>
-        </ng-container>
-        <ng-template #viewSequencial>
-          {{ row.sequencial_month || "-" }}
-        </ng-template>
+        {{ row.sequencial_month || "-" }}
       </td>
     </ng-container>
 
-    <!-- COTAS INÍCIO -->
+    <!-- COTAS INICIO -->
     <ng-container matColumnDef="quotas_start_month">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header="quotas_start_month">
+      <th
+        mat-header-cell
+        *matHeaderCellDef
+        mat-sort-header="quotas_start_month"
+      >
         Cotas (Ini. Mês)
       </th>
+
       <td mat-cell *matCellDef="let row">
-        <ng-container *ngIf="isEditing(row); else viewCotasIni">
-          <mat-form-field class="compact-field">
-            <input matInput type="number" [(ngModel)]="row.quotas_start_month" />
-          </mat-form-field>
-        </ng-container>
-        <ng-template #viewCotasIni>
-          {{ row.quotas_start_month || "-" }}
-        </ng-template>
+        {{ row.quotas_start_month || "-" }}
       </td>
     </ng-container>
 
@@ -126,15 +89,9 @@
       <th mat-header-cell *matHeaderCellDef mat-sort-header="quotas_value">
         Valor Cota
       </th>
+
       <td mat-cell *matCellDef="let row">
-        <ng-container *ngIf="isEditing(row); else viewValorCota">
-          <mat-form-field class="compact-field">
-            <input matInput type="number" [(ngModel)]="row.quotas_value" />
-          </mat-form-field>
-        </ng-container>
-        <ng-template #viewValorCota>
-          {{ row.quotas_value || 0 | currency: "BRL" }}
-        </ng-template>
+        {{ row.quotas_value || 0 | currency : "BRL" }}
       </td>
     </ng-container>
 
@@ -143,15 +100,9 @@
       <th mat-header-cell *matHeaderCellDef mat-sort-header="unit_proven">
         Provento Unit.
       </th>
+
       <td mat-cell *matCellDef="let row">
-        <ng-container *ngIf="isEditing(row); else viewUnitProven">
-          <mat-form-field class="compact-field">
-            <input matInput type="number" [(ngModel)]="row.unit_proven" />
-          </mat-form-field>
-        </ng-container>
-        <ng-template #viewUnitProven>
-          {{ row.unit_proven || 0 | currency: "BRL" }}
-        </ng-template>
+        {{ row.unit_proven || 0 | currency : "BRL" }}
       </td>
     </ng-container>
 
@@ -160,106 +111,91 @@
       <th mat-header-cell *matHeaderCellDef mat-sort-header="purchased_quotas">
         Cotas Compradas
       </th>
+
       <td mat-cell *matCellDef="let row">
-        <ng-container *ngIf="isEditing(row); else viewPurchased">
-          <mat-form-field class="compact-field">
-            <input matInput type="number" [(ngModel)]="row.purchased_quotas" />
-          </mat-form-field>
-        </ng-container>
-        <ng-template #viewPurchased>
-          {{ row.purchased_quotas || 0 }}
-        </ng-template>
+        {{ row.purchased_quotas || 0 }}
       </td>
     </ng-container>
 
     <!-- VALOR COMPRA -->
     <ng-container matColumnDef="value_purchased_quotas">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header="value_purchased_quotas">
-        Valor de Compra
+      <th
+        mat-header-cell
+        *matHeaderCellDef
+        mat-sort-header="value_purchased_quotas"
+      >
+        Valor Compra
       </th>
+
       <td mat-cell *matCellDef="let row">
-        <ng-container *ngIf="isEditing(row); else viewValuePurchase">
-          <mat-form-field class="compact-field">
-            <input matInput type="number" [(ngModel)]="row.value_purchased_quotas" />
-          </mat-form-field>
-        </ng-container>
-        <ng-template #viewValuePurchase>
-          {{ row.value_purchased_quotas || 0 | currency: "BRL" }}
-        </ng-template>
+        {{ row.value_purchased_quotas || 0 | currency : "BRL" }}
       </td>
     </ng-container>
 
-    <!-- PROVENTO MÊS -->
+    <!-- PROVENTO MES -->
     <ng-container matColumnDef="month_value_provent">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header="month_value_provent">
+      <th
+        mat-header-cell
+        *matHeaderCellDef
+        mat-sort-header="month_value_provent"
+      >
         Provento Mês
       </th>
+
       <td mat-cell *matCellDef="let row">
-        <ng-container *ngIf="isEditing(row); else viewMonthProvent">
-          <mat-form-field class="compact-field">
-            <input matInput type="number" [(ngModel)]="row.month_value_provent" />
-          </mat-form-field>
-        </ng-container>
-        <ng-template #viewMonthProvent>
-          {{ row.month_value_provent || 0 | currency: "BRL" }}
-        </ng-template>
+        {{ row.month_value_provent || 0 | currency : "BRL" }}
       </td>
     </ng-container>
 
-    <!-- COTAS PROV -->
+    <!-- COTAS COM PROVENTO -->
     <ng-container matColumnDef="purchased_quotas_proven">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header="purchased_quotas_proven">
+      <th
+        mat-header-cell
+        *matHeaderCellDef
+        mat-sort-header="purchased_quotas_proven"
+      >
         C. Com Prov.
       </th>
+
       <td mat-cell *matCellDef="let row">
-        <ng-container *ngIf="isEditing(row); else viewPurchasedProven">
-          <mat-form-field class="compact-field">
-            <input matInput type="number" [(ngModel)]="row.purchased_quotas_proven" />
-          </mat-form-field>
-        </ng-container>
-        <ng-template #viewPurchasedProven>
-          {{ row.purchased_quotas_proven || 0 }}
-        </ng-template>
+        {{ row.purchased_quotas_proven || 0 }}
       </td>
     </ng-container>
 
-    <!-- TOTAL PROV -->
+    <!-- TOTAL PROVENTO -->
     <ng-container matColumnDef="value_purchased_quotas_proven">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header="value_purchased_quotas_proven">
+      <th
+        mat-header-cell
+        *matHeaderCellDef
+        mat-sort-header="value_purchased_quotas_proven"
+      >
         Total Prov.
       </th>
+
       <td mat-cell *matCellDef="let row">
-        <ng-container *ngIf="isEditing(row); else viewTotalProven">
-          <mat-form-field class="compact-field">
-            <input matInput type="number" [(ngModel)]="row.value_purchased_quotas_proven" />
-          </mat-form-field>
-        </ng-container>
-        <ng-template #viewTotalProven>
-          {{ row.value_purchased_quotas_proven || 0 | currency: "BRL" }}
-        </ng-template>
+        {{ row.value_purchased_quotas_proven || 0 | currency : "BRL" }}
       </td>
     </ng-container>
 
     <!-- ACUMULADO -->
     <ng-container matColumnDef="accumulated_value_month">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header="accumulated_value_month">
+      <th
+        mat-header-cell
+        *matHeaderCellDef
+        mat-sort-header="accumulated_value_month"
+      >
         Acumulado
       </th>
+
       <td mat-cell *matCellDef="let row">
-        <ng-container *ngIf="isEditing(row); else viewAccumulated">
-          <mat-form-field class="compact-field">
-            <input matInput type="number" [(ngModel)]="row.accumulated_value_month" />
-          </mat-form-field>
-        </ng-container>
-        <ng-template #viewAccumulated>
-          {{ row.accumulated_value_month || 0 | currency: "BRL" }}
-        </ng-template>
+        {{ row.accumulated_value_month || 0 | currency : "BRL" }}
       </td>
     </ng-container>
 
     <!-- HEADER + ROWS -->
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    ```
   </table>
 
   <mat-paginator [pageSize]="5"></mat-paginator>

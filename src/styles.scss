@@ -19,13 +19,21 @@ $dark-theme: mat.define-dark-theme(
 
 body {
   background-color: #212121;
-  color: mat.get-color-from-palette(mat.$grey-palette, 50);
+  color: whitesmoke;
   font-family: Roboto, "Helvetica Neue", sans-serif;
   margin: 0;
 }
 
+.container {
+  margin: 25px;
+}
+
+.white {
+  color: whitesmoke;
+}
+
 a {
-  color: mat.get-color-from-palette($dark-accent, 200);
+  // color: mat.get-color-from-palette($dark-accent, 200);
   text-decoration: none;
 
   &:hover {
@@ -39,7 +47,7 @@ h3,
 h4,
 h5,
 h6 {
-  color: mat.get-color-from-palette(mat.$grey-palette, 50);
+  color: whitesmoke;
 }
 
 ::-webkit-scrollbar {
@@ -55,10 +63,57 @@ h6 {
   border-radius: 4px;
 }
 
-.container {
-  margin: 25px;
+.mat-mdc-input-element {
+  color: whitesmoke !important;
+  caret-color: whitesmoke;
 }
 
-.white {
-  color: white;
+.mat-mdc-input-element::placeholder {
+  color: rgba(245, 245, 245, 0.6);
+}
+
+.mat-mdc-input-element::selection {
+  background: #616161;
+  color: whitesmoke;
+}
+
+.mat-mdc-input-element::-moz-selection {
+  background: #616161;
+  color: whitesmoke;
+}
+
+.mat-mdc-form-field .mat-mdc-floating-label {
+  color: rgba(245, 245, 245, 0.7);
+}
+
+.mat-mdc-form-field.mat-focused .mat-mdc-input-element {
+  color: whitesmoke !important;
+}
+
+.mat-mdc-form-field {
+  --mdc-filled-text-field-input-text-color: whitesmoke;
+  --mdc-outlined-text-field-input-text-color: whitesmoke;
+}
+
+.mat-mdc-select-value-text {
+  color: whitesmoke;
+}
+
+.mat-mdc-form-field.mat-focused .mat-mdc-floating-label {
+  color: mat.get-color-from-palette($dark-accent, 200);
+}
+
+.mat-mdc-card {
+  background: #2b2b2b;
+  color: whitesmoke;
+}
+
+.mat-mdc-table {
+  background: #2b2b2b;
+  color: whitesmoke;
+}
+
+.mat-mdc-dialog-container {
+  background: #2b2b2b;
+  color: whitesmoke;
 }

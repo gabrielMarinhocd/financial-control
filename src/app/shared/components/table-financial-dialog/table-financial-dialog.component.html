@@ -1,0 +1,65 @@
+<h2 mat-dialog-title>Registro Financeiro</h2>
+
+<mat-dialog-content>
+  <div class="form-grid">
+    <mat-form-field appearance="outline">
+      <mat-label>Data</mat-label>
+      <input matInput type="date" [(ngModel)]="row.date" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Mês Sequencial</mat-label>
+      <input matInput type="number" [(ngModel)]="row.sequencial_month" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Cotas início mês</mat-label>
+      <input matInput type="number" [(ngModel)]="row.quotas_start_month" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Valor da cota</mat-label>
+      <input matInput type="number" [(ngModel)]="row.quotas_value" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Provento unitário</mat-label>
+      <input matInput type="number" [(ngModel)]="row.unit_proven" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Cotas compradas</mat-label>
+      <input matInput type="number" [(ngModel)]="row.purchased_quotas" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Valor compra</mat-label>
+      <input matInput type="number" [(ngModel)]="row.value_purchased_quotas" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Provento do mês</mat-label>
+      <input matInput type="number" [(ngModel)]="row.month_value_provent" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Cotas com provento</mat-label>
+      <input matInput type="number" [(ngModel)]="row.purchased_quotas_proven" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Total proventos</mat-label>
+      <input
+        matInput
+        type="number"
+        [(ngModel)]="row.value_purchased_quotas_proven"
+      />
+    </mat-form-field>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="close()">Cancelar</button>
+
+  <button mat-raised-button color="primary" (click)="save()">Salvar</button>
+</mat-dialog-actions>

@@ -15,6 +15,8 @@ import { DataTable } from '../../../models/data-table.model';
 import { Table } from '../../../models/table.model';
 import { MaterialModule } from '../../material/material.module';
 import { FinancialService } from '../../../core/services/financial.service';
+import { MatDialog } from '@angular/material/dialog';
+import { TableFinancialDialogComponent } from '../table-financial-dialog/table-financial-dialog.component';
 
 @Component({
   selector: 'app-table-financial',
@@ -49,7 +51,10 @@ export class TableFinancialComponent implements OnChanges, AfterViewInit {
   newRow!: DataTable;
   isMobile: boolean = false;
 
-  constructor(private financialService: FinancialService) {}
+  constructor(
+    private financialService: FinancialService,
+    private dialog: MatDialog
+  ) {}
 
   ngOnInit() {
     this.onCheckMobile();
@@ -78,7 +83,7 @@ export class TableFinancialComponent implements OnChanges, AfterViewInit {
 
     this.dataSource.sortingDataAccessor = (
       item: DataTable,
-      property: string,
+      property: string
     ) => {
       if (property === 'date') {
         return item.date ? new Date(item.date).getTime() : 0;
@@ -87,23 +92,44 @@ export class TableFinancialComponent implements OnChanges, AfterViewInit {
     };
   }
 
-  changeAction(): void {
-    if (this.isUpdate) {
-      const itemIndex = this.data.data!.findIndex(
-        (a) => a.id === this.newRow.id,
-      );
-      if (itemIndex !== -1) {
-        this.data.data![itemIndex] = this.newRow;
-      } else {
-        this.data.data!.push(this.newRow);
-      }
-    } else {
-      this.isAdding = true;
-      this.newRow = new DataTable();
-      this.data.data = [this.newRow, ...(this.data.data || [])];
-    }
+  add(): void {
+    const dialogRef = this.dialog.open(TableFinancialDialogComponent, {
+      width: '900px',
+      maxWidth: '95vw',
+      data: new DataTable(),
+    });
 
-    this.dataSource.data = this.data.data!;
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.data.data!.push(result);
+
+        this.financialService.saveData(this.data.name!, this.data);
+
+        this.dataSource.data = this.data.data!;
+      }
+    });
+  }
+
+  edit(row: DataTable): void {
+    const dialogRef = this.dialog.open(TableFinancialDialogComponent, {
+      width: '900px',
+      maxWidth: '95vw',
+      data: row,
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        const index = this.data.data!.findIndex((r) => r === row);
+
+        if (index !== -1) {
+          this.data.data![index] = result;
+        }
+
+        this.financialService.saveData(this.data.name!, this.data);
+
+        this.dataSource.data = this.data.data!;
+      }
+    });
   }
 
   save(row?: DataTable): void {
@@ -121,12 +147,6 @@ export class TableFinancialComponent implements OnChanges, AfterViewInit {
 
   isEditing(row: DataTable): boolean {
     return this.isAdding && row === this.newRow;
-  }
-
-  edit(row: DataTable): void {
-    this.isAdding = true;
-    this.isUpdate = true;
-    this.newRow = row;
   }
 
   delete(row: DataTable): void {
