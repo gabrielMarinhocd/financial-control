@@ -5,6 +5,7 @@ import {
   SimpleChanges,
   ViewChild,
   AfterViewInit,
+  OnInit,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -25,11 +26,18 @@ import { TableFinancialDialogComponent } from '../table-financial-dialog/table-f
   templateUrl: './table-financial.component.html',
   styleUrls: ['./table-financial.component.scss'],
 })
-export class TableFinancialComponent implements OnChanges, AfterViewInit {
+export class TableFinancialComponent
+  implements OnChanges, AfterViewInit, OnInit
+{
   @Input() data: Table = new Table();
   @ViewChild(MatSort) sort!: MatSort;
 
   dataSource = new MatTableDataSource<DataTable>();
+
+  quote = {
+    price: 0,
+    dividend: 0,
+  };
 
   displayedColumns: string[] = [
     'actions',
@@ -58,6 +66,20 @@ export class TableFinancialComponent implements OnChanges, AfterViewInit {
 
   ngOnInit() {
     this.onCheckMobile();
+
+    if (this.data?.name) {
+      this.loadQuote();
+    }
+  }
+
+  loadQuote(): void {
+    this.financialService.getQuote(this.data.name!).then((result: any) => {
+      debugger;
+      this.quote = {
+        price: result?.regularMarketPrice || 0,
+        dividend: result?.regularMarketChange || 0,
+      };
+    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -69,12 +91,15 @@ export class TableFinancialComponent implements OnChanges, AfterViewInit {
       }
 
       this.dataSource.data = this.data.data!;
+
+      if (this.data?.name) {
+        this.loadQuote();
+      }
     }
   }
 
   onCheckMobile(event?: any) {
     const width = event?.target?.innerWidth || window.innerWidth;
-
     this.isMobile = width <= 768;
   }
 
@@ -96,7 +121,10 @@ export class TableFinancialComponent implements OnChanges, AfterViewInit {
     const dialogRef = this.dialog.open(TableFinancialDialogComponent, {
       width: '900px',
       maxWidth: '95vw',
-      data: new DataTable(),
+      data: {
+        row: new DataTable(),
+        list: this.data.data,
+      },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
@@ -114,7 +142,10 @@ export class TableFinancialComponent implements OnChanges, AfterViewInit {
     const dialogRef = this.dialog.open(TableFinancialDialogComponent, {
       width: '900px',
       maxWidth: '95vw',
-      data: row,
+      data: {
+        row: row,
+        list: this.data.data,
+      },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
@@ -135,9 +166,11 @@ export class TableFinancialComponent implements OnChanges, AfterViewInit {
   save(row?: DataTable): void {
     this.isAdding = false;
     const target = row || this.newRow;
+
     if (target) {
       this.financialService.saveData(this.data.name!, this.data);
     }
+
     this.dataSource.data = this.data.data!;
   }
 
@@ -151,7 +184,9 @@ export class TableFinancialComponent implements OnChanges, AfterViewInit {
 
   delete(row: DataTable): void {
     this.data.data = this.data.data?.filter((r) => r !== row);
-    this.save(this.data);
+
+    this.financialService.saveData(this.data.name!, this.data);
+
     this.dataSource.data = this.data.data!;
   }
 }

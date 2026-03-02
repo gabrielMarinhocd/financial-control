@@ -1,10 +1,23 @@
 <div class="financial-header container">
   <div class="financial-title">
-    {{ data.name || "" }}
+    
+    <div class="title">
+      {{ data.name || "" }}
+    </div>
+
+    <div class="quote" *ngIf="quote">
+      Valor atual: {{ quote?.price | currency:'BRL' }}
+    </div>
+
+    <div class="dividend" *ngIf="quote">
+      Dividendo: {{ quote?.dividend | currency:'BRL' }}
+    </div>
+
     <span *ngIf="isMobile">
       <span class="white">-</span>
       {{ data.describe }}
     </span>
+
   </div>
 
   <button
@@ -21,8 +34,6 @@
 
 <div class="mat-elevation-z8 container">
   <table mat-table [dataSource]="dataSource" matSort #sort="matSort">
-    ```
-    <!-- ACTIONS -->
     <ng-container matColumnDef="actions">
       <th mat-header-cell *matHeaderCellDef></th>
 
@@ -49,7 +60,6 @@
       </td>
     </ng-container>
 
-    <!-- DATA -->
     <ng-container matColumnDef="date">
       <th mat-header-cell *matHeaderCellDef mat-sort-header="date">Data</th>
 
@@ -58,7 +68,6 @@
       </td>
     </ng-container>
 
-    <!-- SEQUENCIAL -->
     <ng-container matColumnDef="sequencial_month">
       <th mat-header-cell *matHeaderCellDef mat-sort-header="sequencial_month">
         Mês Seq.
@@ -69,7 +78,6 @@
       </td>
     </ng-container>
 
-    <!-- COTAS INICIO -->
     <ng-container matColumnDef="quotas_start_month">
       <th
         mat-header-cell
@@ -84,7 +92,6 @@
       </td>
     </ng-container>
 
-    <!-- VALOR COTA -->
     <ng-container matColumnDef="quotas_value">
       <th mat-header-cell *matHeaderCellDef mat-sort-header="quotas_value">
         Valor Cota
@@ -95,7 +102,6 @@
       </td>
     </ng-container>
 
-    <!-- COTAS COMPRADAS -->
     <ng-container matColumnDef="purchased_quotas">
       <th mat-header-cell *matHeaderCellDef mat-sort-header="purchased_quotas">
         Cotas Compradas
@@ -106,7 +112,6 @@
       </td>
     </ng-container>
 
-    <!-- VALOR COMPRA -->
     <ng-container matColumnDef="value_purchased_quotas">
       <th
         mat-header-cell
@@ -121,7 +126,6 @@
       </td>
     </ng-container>
 
-    <!-- PROVENTO UNIT -->
     <ng-container matColumnDef="unit_proven">
       <th mat-header-cell *matHeaderCellDef mat-sort-header="unit_proven">
         Provento Unit.
@@ -132,7 +136,6 @@
       </td>
     </ng-container>
 
-    <!-- PROVENTO MES -->
     <ng-container matColumnDef="month_value_provent">
       <th
         mat-header-cell
@@ -147,7 +150,6 @@
       </td>
     </ng-container>
 
-    <!-- COTAS COM PROVENTO -->
     <ng-container matColumnDef="purchased_quotas_proven">
       <th
         mat-header-cell
@@ -162,7 +164,6 @@
       </td>
     </ng-container>
 
-    <!-- TOTAL PROVENTO -->
     <ng-container matColumnDef="value_purchased_quotas_proven">
       <th
         mat-header-cell
@@ -177,7 +178,6 @@
       </td>
     </ng-container>
 
-    <!-- ACUMULADO -->
     <ng-container matColumnDef="accumulated_value_month">
       <th
         mat-header-cell
@@ -192,10 +192,8 @@
       </td>
     </ng-container>
 
-    <!-- HEADER + ROWS -->
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-    ```
   </table>
 
   <mat-paginator [pageSize]="5"></mat-paginator>
