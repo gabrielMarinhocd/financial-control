@@ -14,41 +14,75 @@
 
     <mat-form-field appearance="outline">
       <mat-label>Cotas início mês</mat-label>
-      <input matInput type="number" [(ngModel)]="row.quotas_start_month" />
+      <input
+        matInput
+        type="number"
+        [(ngModel)]="row.quotas_start_month"
+        (ngModelChange)="calculateMonthProvent()"
+      />
     </mat-form-field>
 
     <mat-form-field appearance="outline">
       <mat-label>Valor da cota</mat-label>
-      <input matInput type="number" [(ngModel)]="row.quotas_value" />
-    </mat-form-field>
-
-    <mat-form-field appearance="outline">
-      <mat-label>Provento unitário</mat-label>
-      <input matInput type="number" [(ngModel)]="row.unit_proven" />
+      <input
+        matInput
+        type="number"
+        [(ngModel)]="row.quotas_value"
+        (ngModelChange)="calculatePurchaseValue()"
+      />
     </mat-form-field>
 
     <mat-form-field appearance="outline">
       <mat-label>Cotas compradas</mat-label>
-      <input matInput type="number" [(ngModel)]="row.purchased_quotas" />
+      <input
+        matInput
+        type="number"
+        [(ngModel)]="row.purchased_quotas"
+        (ngModelChange)="calculatePurchaseValue()"
+      />
     </mat-form-field>
 
     <mat-form-field appearance="outline">
       <mat-label>Valor compra</mat-label>
-      <input matInput type="number" [(ngModel)]="row.value_purchased_quotas" />
+      <input
+        matInput
+        type="number"
+        [(ngModel)]="row.value_purchased_quotas"
+        readonly
+      />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Dividendo</mat-label>
+      <input
+        matInput
+        type="number"
+        [(ngModel)]="row.unit_proven"
+        (ngModelChange)="calculateMonthProvent()"
+      />
     </mat-form-field>
 
     <mat-form-field appearance="outline">
       <mat-label>Provento do mês</mat-label>
-      <input matInput type="number" [(ngModel)]="row.month_value_provent" />
+      <input
+        matInput
+        type="number"
+        [(ngModel)]="row.month_value_provent"
+        readonly
+      />
     </mat-form-field>
 
     <mat-form-field appearance="outline">
-      <mat-label>Cotas com provento</mat-label>
-      <input matInput type="number" [(ngModel)]="row.purchased_quotas_proven" />
+      <mat-label>Cotas compradas com provento</mat-label>
+      <input
+        matInput
+        type="number"
+        [(ngModel)]="row.purchased_quotas_proven"
+      />
     </mat-form-field>
 
     <mat-form-field appearance="outline">
-      <mat-label>Total proventos</mat-label>
+      <mat-label>Valor C. Compradas Proventos</mat-label>
       <input
         matInput
         type="number"
@@ -60,6 +94,5 @@
 
 <mat-dialog-actions align="end">
   <button mat-button (click)="close()">Cancelar</button>
-
   <button mat-raised-button color="primary" (click)="save()">Salvar</button>
 </mat-dialog-actions>

@@ -24,15 +24,17 @@ export class TableFinancialDialogComponent {
     public dialogRef: MatDialogRef<TableFinancialDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    Object.assign(this.row, data.row);
+    this.row = new DataTable().transform(data.row || data);
     this.list = data.list || [];
   }
 
   save() {
+    this.calculateAccumulated();
+
     const duplicated = this.list.some(
       (item) =>
         item.sequencial_month === this.row.sequencial_month &&
-        item !== this.data.row
+        item !== this.row
     );
 
     if (duplicated) {
@@ -45,5 +47,34 @@ export class TableFinancialDialogComponent {
 
   close() {
     this.dialogRef.close();
+  }
+
+  calculatePurchaseValue(): void {
+    const quotas = Number(this.row.purchased_quotas) || 0;
+    const quotaValue = Number(this.row.quotas_value) || 0;
+
+    const result = quotas * quotaValue;
+    this.row.value_purchased_quotas = Number(result.toFixed(2));
+  }
+
+  calculateMonthProvent(): void {
+    const quotas = Number(this.row.quotas_start_month) || 0;
+    const dividend = Number(this.row.unit_proven) || 0;
+
+    const result = quotas * dividend;
+    this.row.month_value_provent = Number(result.toFixed(2));
+  }
+
+  calculateAccumulated(): void {
+    const initial = Number(this.row.quotas_start_month) || 0;
+    const purchased = Number(this.row.purchased_quotas) || 0;
+    const purchasedProvent = Number(this.row.purchased_quotas_proven) || 0;
+    const quotaValue = Number(this.row.quotas_value) || 0;
+
+    const totalQuotas = initial + purchased + purchasedProvent;
+
+    const result = totalQuotas * quotaValue;
+
+    this.row.accumulated_value_month = Number(result.toFixed(2));
   }
 }
