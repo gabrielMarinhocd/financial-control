@@ -1,23 +1,21 @@
 <div class="financial-header container">
   <div class="financial-title">
-    
     <div class="title">
       {{ data.name || "" }}
     </div>
 
     <div class="quote" *ngIf="quote">
-      Valor atual: {{ quote?.price | currency:'BRL' }}
+      Valor atual: {{ quote?.price | currency : "BRL" }}
     </div>
 
     <div class="dividend" *ngIf="quote">
-      Dividendo: {{ quote?.dividend | currency:'BRL' }}
+      Dividendo: {{ quote?.dividend | currency : "BRL" }}
     </div>
 
     <span *ngIf="isMobile">
       <span class="white">-</span>
       {{ data.describe }}
     </span>
-
   </div>
 
   <button

@@ -13,40 +13,58 @@ import { Table } from '../../models/table.model';
   styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent implements OnInit {
-  mxrf11: any;
+  tables: Table[] = [];
+  selectedTable?: Table;
 
   ngOnInit(): void {
-    const storedData = localStorage.getItem('financial_MXRF11');
-    
-    if (storedData) {
-      this.mxrf11 = new Table().transform(JSON.parse(storedData));
+    const storedTables = localStorage.getItem('financial_tables');
+
+    if (storedTables) {
+      const parsed = JSON.parse(storedTables);
+      this.tables = parsed.map((t: any) => new Table().transform(t));
     } else {
-      this.mxrf11 = new Table(
-        1,
-        'MXRF11',
-        'Teste Inicial',
-        undefined, 
-        [
-          new DataTable(
-            1,
-            '2026-02-01',
-            1,
-            '208',
-            9.4,
-            0.10,
-            18,
-            169.20,
-            20.80,
-            2,
-            18.8,
-            1955.20,
-            1
-          ),
-        ],
-        1
-      );
-      
-      localStorage.setItem('financial_MXRF11', JSON.stringify(this.mxrf11));
+      const defaultTable = this.createDefaultTable();
+
+      this.tables = [defaultTable];
+
+      localStorage.setItem('financial_tables', JSON.stringify(this.tables));
     }
+
+    this.selectedTable = this.tables[0];
+  }
+
+  selectTable(table: Table) {
+    this.selectedTable = table;
+  }
+
+  createDefaultTable(): Table {
+    return new Table(
+      1,
+      'MXRF11',
+      'Teste Inicial',
+      undefined,
+      [
+        new DataTable(
+          1,
+          '2026-02-01',
+          1,
+          '208',
+          9.4,
+          0.1,
+          18,
+          169.2,
+          20.8,
+          2,
+          18.8,
+          1955.2,
+          1
+        ),
+      ],
+      1
+    );
+  }
+
+  addTable() {
+    alert('Cadastrar nova tabela');
   }
 }
