@@ -42,3 +42,6 @@ testem.log
 Thumbs.db
 package-lock.json
 src/env/enviroment.ts
+.firebase/hosting.ZGlzdC9maW5hbmNpYWwtY29udHJvbC9icm93c2Vy.cache
+.firebaserc
+src/env/environment.prod.ts

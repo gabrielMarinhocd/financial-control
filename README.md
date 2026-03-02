@@ -1,27 +1,52 @@
-# FinancialControl
+# 💰 Financial Control
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.17.
+Aplicação web para **controle financeiro pessoal**, permitindo registrar, visualizar e acompanhar informações financeiras de forma simples e organizada.
 
-## Development server
+O projeto foi desenvolvido utilizando **Angular** e hospedado no **Firebase Hosting**, permitindo acesso rápido e seguro pela web.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+---
 
-## Code scaffolding
+# 🌐 Acesso ao Aplicativo
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Acesse a aplicação pelo link:
 
-## Build
+🔗 https://financial-control-ce878.web.app
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+Console do projeto no Firebase:
 
-## Running unit tests
+🔗 https://console.firebase.google.com/project/financial-control-ce878/overview
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+---
 
-## Running end-to-end tests
+# 📊 Funcionalidades
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+- 📈 Visualização de dados financeiros
+- 💰 Monitoramento de valores e ativos
+- 🔄 Atualização dinâmica de informações
+- 📱 Interface responsiva
+- ☁️ Hospedagem em nuvem com Firebase
 
-## Further help
+---
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+# 🛠️ Tecnologias Utilizadas
+
+- Angular 17
+- TypeScript
+- Angular Material
+- RxJS
+- HTML5
+- CSS3
+- Firebase Hosting
+
+---
+
+# ⚙️ Ambiente de Desenvolvimento
+
+Este projeto foi gerado com **Angular CLI 17.3.17**.
+
+## Servidor de desenvolvimento
+
+Execute:
+
+```bash
+ng serve

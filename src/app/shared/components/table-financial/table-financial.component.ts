@@ -74,7 +74,6 @@ export class TableFinancialComponent
 
   loadQuote(): void {
     this.financialService.getQuote(this.data.name!).then((result: any) => {
-      debugger;
       this.quote = {
         price: result?.regularMarketPrice || 0,
         dividend: result?.regularMarketChange || 0,
