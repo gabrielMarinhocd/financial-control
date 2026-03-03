@@ -1,0 +1,20 @@
+<h2 mat-dialog-title>Nova Tabela</h2>
+
+<mat-dialog-content>
+  <mat-form-field appearance="outline" style="width: 100%;">
+    <mat-label>Nome</mat-label>
+    <input matInput [(ngModel)]="name" />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" style="width: 100%; margin-top: 12px;">
+    <mat-label>Descrição</mat-label>
+    <textarea matInput rows="3" [(ngModel)]="description"></textarea>
+  </mat-form-field>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="close()">Cancelar</button>
+  <button mat-raised-button color="primary" (click)="save()">
+    Criar
+  </button>
+</mat-dialog-actions>

@@ -55,7 +55,6 @@ export class TableFinancialComponent
   ];
 
   isAdding = false;
-  isUpdate = false;
   newRow!: DataTable;
   isMobile: boolean = false;
 
@@ -67,33 +66,23 @@ export class TableFinancialComponent
   ngOnInit() {
     this.onCheckMobile();
 
+    if (this.data?.data) {
+      this.dataSource.data = [...this.data.data];
+    }
+
     if (this.data?.name) {
       this.loadQuote();
     }
   }
 
-  loadQuote(): void {
-    this.financialService.getQuote(this.data.name!).then((result: any) => {
-      this.quote = {
-        price: result?.regularMarketPrice || 0,
-        dividend: result?.regularMarketChange || 0,
-      };
-    });
-  }
-
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['data'] && this.data) {
       this.dataSource.data = this.data.data ?? [];
-  
+
       if (this.data?.name) {
         this.loadQuote();
       }
     }
-  }
-
-  onCheckMobile(event?: any) {
-    const width = event?.target?.innerWidth || window.innerWidth;
-    this.isMobile = width <= 768;
   }
 
   ngAfterViewInit(): void {
@@ -110,6 +99,34 @@ export class TableFinancialComponent
     };
   }
 
+  loadQuote(): void {
+    this.financialService.getQuote(this.data.name!).then((result: any) => {
+      this.quote = {
+        price: result?.regularMarketPrice || 0,
+        dividend: result?.regularMarketChange || 0,
+      };
+    });
+  }
+
+  onCheckMobile(event?: any) {
+    const width = event?.target?.innerWidth || window.innerWidth;
+    this.isMobile = width <= 768;
+  }
+
+  private updateTables(): void {
+    const tables = JSON.parse(sessionStorage.getItem('tables') || '[]');
+
+    const index = tables.findIndex((t: any) => t.name === this.data.name);
+
+    if (index !== -1) {
+      tables[index] = this.data;
+    }
+
+    sessionStorage.setItem('tables', JSON.stringify(tables));
+
+    this.financialService.updateTable(tables);
+  }
+
   add(): void {
     const dialogRef = this.dialog.open(TableFinancialDialogComponent, {
       width: '900px',
@@ -122,11 +139,12 @@ export class TableFinancialComponent
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.data.data!.push(result);
+        this.data.data = this.data.data || [];
+        this.data.data.push(result);
 
-        this.financialService.saveData(this.data.name!, this.data);
+        this.updateTables();
 
-        this.dataSource.data = this.data.data!;
+        this.dataSource.data = [...this.data.data];
       }
     });
   }
@@ -136,50 +154,39 @@ export class TableFinancialComponent
       width: '900px',
       maxWidth: '95vw',
       data: {
-        row: row,
+        row: { ...row },
         list: this.data.data,
       },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        const index = this.data.data!.findIndex((r) => r === row);
+        const index = this.data.data!.findIndex((r) => r.id === row.id);
 
         if (index !== -1) {
           this.data.data![index] = result;
         }
 
-        this.financialService.saveData(this.data.name!, this.data);
+        this.updateTables();
 
-        this.dataSource.data = this.data.data!;
+        this.dataSource.data = [...this.data.data!];
       }
     });
   }
 
-  save(row?: DataTable): void {
-    this.isAdding = false;
-    const target = row || this.newRow;
+  delete(row: DataTable): void {
+    this.data.data = this.data.data?.filter((r) => r.id !== row.id);
 
-    if (target) {
-      this.financialService.saveData(this.data.name!, this.data);
-    }
+    this.updateTables();
 
-    this.dataSource.data = this.data.data!;
+    this.dataSource.data = [...this.data.data!];
   }
 
-  cancel(row?: DataTable): void {
+  cancel(): void {
     this.isAdding = false;
   }
 
   isEditing(row: DataTable): boolean {
     return this.isAdding && row === this.newRow;
-  }
-
-  delete(row: DataTable): void {
-    this.data.data = this.data.data?.filter((r) => r !== row);
-
-    this.financialService.saveData(this.data.name!, this.data);
-
-    this.dataSource.data = this.data.data!;
   }
 }

@@ -6,10 +6,6 @@ import { environment } from '../../../env/enviroment';
   providedIn: 'root',
 })
 export class FinancialService {
-  private getKey(ticker: string): string {
-    return `financial_${ticker}`;
-  }
-
   async getQuote(ticker: string): Promise<number | null> {
     try {
       const response = await fetch(
@@ -25,17 +21,26 @@ export class FinancialService {
     }
   }
 
-  createTable(): any {
-    localStorage.setItem('financial_MXRF11', JSON.stringify(new Table()));
+  createTable(tables: any): any {
+    localStorage.setItem('financial_tables', JSON.stringify(tables));
     return true;
   }
 
+  updateTable(tables: any): any {
+    localStorage.setItem('financial_tables', JSON.stringify(tables));
+    return tables;
+  }
+
   getData(name_table: string): Table {
-    const data = localStorage.getItem(this.getKey(name_table));
+    const data = localStorage.getItem(name_table);
     return data ? JSON.parse(data) : new Table();
   }
 
   saveData(name_table: string, entries: Table): void {
-    localStorage.setItem(this.getKey(name_table), JSON.stringify(entries));
+    localStorage.setItem(name_table, JSON.stringify(entries));
+  }
+
+  getTables(): any {
+    return localStorage.getItem('financial_tables');
   }
 }
