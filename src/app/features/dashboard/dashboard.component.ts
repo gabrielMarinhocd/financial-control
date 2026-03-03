@@ -4,6 +4,7 @@ import { TableFinancialComponent } from '../../shared/components/table-financial
 import { DataTable } from '../../models/data-table.model';
 import { MaterialModule } from '../../shared/material/material.module';
 import { Table } from '../../models/table.model';
+import { FinancialService } from '../../core/services/financial.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -16,18 +17,21 @@ export class DashboardComponent implements OnInit {
   tables: Table[] = [];
   selectedTable?: Table;
 
+  constructor(private financialService: FinancialService) {}
+
   ngOnInit(): void {
     const storedTables = localStorage.getItem('financial_tables');
 
     if (storedTables) {
       const parsed = JSON.parse(storedTables);
+
       this.tables = parsed.map((t: any) => new Table().transform(t));
     } else {
       const defaultTable = this.createDefaultTable();
 
       this.tables = [defaultTable];
 
-      localStorage.setItem('financial_tables', JSON.stringify(this.tables));
+      localStorage.setItem('financial_MXRF11', JSON.stringify(this.tables));
     }
 
     this.selectedTable = this.tables[0];
@@ -48,7 +52,7 @@ export class DashboardComponent implements OnInit {
           1,
           '2026-02-01',
           1,
-          '208',
+          208,
           9.4,
           0.1,
           18,

@@ -3,7 +3,7 @@ export class DataTable {
     public id?: number,
     public date?: string,
     public sequencial_month?: number,
-    public quotas_start_month?: string,
+    public quotas_start_month?: number,
     public quotas_value?: number,
     public unit_proven?: number,
     public purchased_quotas?: number,

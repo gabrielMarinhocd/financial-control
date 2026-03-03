@@ -46,7 +46,8 @@ Este projeto foi gerado com **Angular CLI 17.3.17**.
 
 ## Servidor de desenvolvimento
 
+- npm run deploy
+
 Execute:
 
 ```bash
-ng serve

@@ -82,15 +82,9 @@ export class TableFinancialComponent
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['data']) {
-      if (!this.data.data) {
-        this.data.data = [];
-      } else {
-        this.data = this.financialService.getData(this.data.name!) || this.data;
-      }
-
-      this.dataSource.data = this.data.data!;
-
+    if (changes['data'] && this.data) {
+      this.dataSource.data = this.data.data ?? [];
+  
       if (this.data?.name) {
         this.loadQuote();
       }
