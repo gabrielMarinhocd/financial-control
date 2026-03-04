@@ -1,0 +1,40 @@
+<h2 mat-dialog-title>Simular investimento</h2>
+
+<mat-dialog-content>
+  <mat-form-field appearance="outline" style="width: 100%">
+    <mat-label>Meses para simulação</mat-label>
+    <input matInput type="number" [(ngModel)]="months" min="1" />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" style="width: 100%; margin-top: 10px">
+    <mat-label>Cotas compradas por mês</mat-label>
+    <input matInput type="number" [(ngModel)]="quotasPerMonth" min="0" />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" style="width: 100%; margin-top: 10px">
+    <mat-label>Incremento mensal de cotas</mat-label>
+    <input matInput type="number" [(ngModel)]="increment" min="0" />
+  </mat-form-field>
+
+  <div style="margin-top: 20px">
+    <label>Valor da cota</label>
+
+    <mat-radio-group [(ngModel)]="useCurrentPrice">
+      <mat-radio-button [value]="true"> Usar valor atual </mat-radio-button>
+
+      <br />
+
+      <mat-radio-button [value]="false">
+        Usar valor médio da tabela
+      </mat-radio-button>
+    </mat-radio-group>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="cancel()">Cancelar</button>
+
+  <button mat-raised-button color="primary" (click)="simulate()">
+    Simular
+  </button>
+</mat-dialog-actions>

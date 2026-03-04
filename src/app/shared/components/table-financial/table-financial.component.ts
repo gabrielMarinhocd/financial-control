@@ -18,11 +18,18 @@ import { MaterialModule } from '../../material/material.module';
 import { FinancialService } from '../../../core/services/financial.service';
 import { MatDialog } from '@angular/material/dialog';
 import { TableFinancialDialogComponent } from '../table-financial-dialog/table-financial-dialog.component';
+import { TableFinancialSimulationDialogComponent } from '../table-financial-simulation-dialog/table-financial-simulation-dialog.component';
 
 @Component({
   selector: 'app-table-financial',
   standalone: true,
-  imports: [CommonModule, FormsModule, MaterialModule, MatTableModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    MaterialModule,
+    MatTableModule,
+    TableFinancialSimulationDialogComponent,
+  ],
   templateUrl: './table-financial.component.html',
   styleUrls: ['./table-financial.component.scss'],
 })
@@ -57,6 +64,7 @@ export class TableFinancialComponent
   isAdding = false;
   newRow!: DataTable;
   isMobile: boolean = false;
+  simulationActive: boolean = false;
 
   constructor(
     private financialService: FinancialService,
@@ -203,5 +211,82 @@ export class TableFinancialComponent
   (${start} + ${purchased} + ${proven}) × ${price.toFixed(2)}
   = ${total.toFixed(2)}
   `;
+  }
+
+  simulate(): void {
+    const dialogRef = this.dialog.open(
+      TableFinancialSimulationDialogComponent,
+      {
+        width: '400px',
+      }
+    );
+
+    dialogRef.afterClosed().subscribe((config) => {
+      if (!config) return;
+
+      const simulated = this.simulateData(config);
+
+      this.simulationActive = true;
+
+      this.dataSource.data = [...(this.data.data || []), ...simulated];
+    });
+  }
+
+  simulateData(config: any): DataTable[] {
+    const result: DataTable[] = [];
+
+    if (!this.data.data?.length) return result;
+
+    const last = this.data.data[this.data.data.length - 1];
+
+    let quotas =
+      (last.quotas_start_month || 0) +
+      (last.purchased_quotas || 0) +
+      (last.purchased_quotas_proven || 0);
+
+    const dividend = last.unit_proven || 0;
+
+    const price: number = config.useCurrentPrice
+      ? this.quote.price || 1
+      : last.quotas_value || 1;
+
+    for (let i = 1; i <= config.months; i++) {
+      const quotasPurchased =
+        (config.quotasPerMonth || 0) + (config.increment || 0) * (i - 1);
+
+      // compra mensal entra primeiro
+      quotas += quotasPurchased;
+
+      const monthDividend = quotas * dividend;
+
+      const quotasFromDividend = Math.floor(monthDividend / price);
+
+      const row = new DataTable(
+        Date.now() + i,
+        '',
+        (last.sequencial_month || 0) + i,
+        quotas,
+        price,
+        dividend,
+        quotasPurchased,
+        quotasPurchased * price,
+        monthDividend,
+        quotasFromDividend,
+        quotasFromDividend * price,
+        quotas * price,
+        1
+      );
+
+      result.push(row);
+
+      quotas += quotasFromDividend;
+    }
+
+    return result;
+  }
+
+  clearSimulation(): void {
+    this.dataSource.data = [...(this.data.data || [])];
+    this.simulationActive = false;
   }
 }

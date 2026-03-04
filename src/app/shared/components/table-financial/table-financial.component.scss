@@ -45,7 +45,7 @@ mat-card-header {
 
 .dividend {
   font-size: 0.9rem;
-  color: #2e7d32; /* verde */
+  color: #2e7d32;
   margin-top: 2px;
 }
 
@@ -54,6 +54,14 @@ mat-card-header {
   color: rgba(0, 0, 0, 0.6);
 }
 
+/* ===== BOTÕES HEADER ===== */
+.financial-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* padroniza TODOS mini-fab */
 button[mat-mini-fab] {
   width: 32px;
   height: 32px;

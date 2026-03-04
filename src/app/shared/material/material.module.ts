@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
@@ -13,6 +14,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatRadioModule } from '@angular/material/radio';
 
 @NgModule({
   exports: [
@@ -30,6 +33,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatInputModule,
     MatSelectModule,
     MatTooltipModule,
+    MatDialogModule,
+    MatRadioModule
   ],
 })
 export class MaterialModule {}
