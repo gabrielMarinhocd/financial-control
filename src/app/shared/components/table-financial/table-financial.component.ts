@@ -15,6 +15,7 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { DataTable } from '../../../models/data-table.model';
 import { Table } from '../../../models/table.model';
 import { MaterialModule } from '../../material/material.module';
+import { MatPaginator } from '@angular/material/paginator';
 import { FinancialService } from '../../../core/services/financial.service';
 import { MatDialog } from '@angular/material/dialog';
 import { TableFinancialDialogComponent } from '../table-financial-dialog/table-financial-dialog.component';
@@ -38,6 +39,7 @@ export class TableFinancialComponent
 {
   @Input() data: Table = new Table();
   @ViewChild(MatSort) sort!: MatSort;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   dataSource = new MatTableDataSource<DataTable>();
 
@@ -95,7 +97,8 @@ export class TableFinancialComponent
 
   ngAfterViewInit(): void {
     this.dataSource.sort = this.sort;
-
+    this.dataSource.paginator = this.paginator;
+  
     this.dataSource.sortingDataAccessor = (
       item: DataTable,
       property: string
