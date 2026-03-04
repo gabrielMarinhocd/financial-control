@@ -1,11 +1,22 @@
 .form-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  column-gap: 24px;
-  row-gap: 16px;
-  min-width: 450px;
+  gap: 16px 24px;
+  min-width: 0;
 }
 
 mat-form-field {
   width: 100%;
+}
+
+@media (max-width: 768px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .form-grid {
+    padding: 0 8px;
+  }
 }

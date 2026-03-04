@@ -89,7 +89,6 @@ export class DashboardComponent implements OnInit {
   }
 
   addTable() {
-
     const dialogRef = this.dialog.open(TableCreateDialogComponent, {
       width: '500px',
       maxWidth: '95vw'

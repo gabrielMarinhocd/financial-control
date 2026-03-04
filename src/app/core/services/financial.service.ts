@@ -15,6 +15,7 @@ export class FinancialService {
       const data = await response.json();
 
       return data?.results?.[0] || null;
+      return null;
     } catch (error) {
       console.error('Erro ao consultar cotação', error);
       return null;
