@@ -59,7 +59,6 @@ mat-list-item:hover {
   background: rgba(255, 255, 255, 0.05);
 }
 
-/* BACKDROP ESCURO DO SIDENAV */
 ::ng-deep .mat-drawer-backdrop.mat-drawer-shown {
   background: rgba(0, 0, 0, 0.45);
   backdrop-filter: blur(2px);
