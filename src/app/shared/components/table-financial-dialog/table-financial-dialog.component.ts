@@ -26,6 +26,16 @@ export class TableFinancialDialogComponent {
   ) {
     this.row = new DataTable().transform(data.row || data);
     this.list = data.list || [];
+
+    if (!this.row.date) {
+      const today = new Date();
+      this.row.date = today.toISOString().slice(0, 10);
+    }
+
+    this.calculateStartMonth();
+    this.calculateMonthProvent();
+    this.calculatePurchaseValue();
+    this.calculateAccumulated();
   }
 
   save() {
@@ -34,7 +44,7 @@ export class TableFinancialDialogComponent {
     const duplicated = this.list.some(
       (item) =>
         item.sequencial_month === this.row.sequencial_month &&
-        item !== this.row
+        item.date !== this.row.date
     );
 
     if (duplicated) {
@@ -55,6 +65,8 @@ export class TableFinancialDialogComponent {
 
     const result = quotas * quotaValue;
     this.row.value_purchased_quotas = Number(result.toFixed(2));
+
+    this.calculateAccumulated();
   }
 
   calculateMonthProvent(): void {
@@ -72,9 +84,30 @@ export class TableFinancialDialogComponent {
     const quotaValue = Number(this.row.quotas_value) || 0;
 
     const totalQuotas = initial + purchased + purchasedProvent;
-
     const result = totalQuotas * quotaValue;
 
     this.row.accumulated_value_month = Number(result.toFixed(2));
+  }
+
+  calculateStartMonth(): void {
+    const currentMonth = Number(this.row.sequencial_month);
+
+    if (!currentMonth || currentMonth <= 1) return;
+
+    const previous = this.list.find(
+      (item) => item.sequencial_month === currentMonth - 1
+    );
+
+    if (!previous) return;
+
+    const initial = Number(previous.quotas_start_month) || 0;
+    const purchased = Number(previous.purchased_quotas) || 0;
+    const purchasedProvent = Number(previous.purchased_quotas_proven) || 0;
+
+    const totalPrevious = initial + purchased + purchasedProvent;
+
+    this.row.quotas_start_month = totalPrevious;
+
+    this.calculateMonthProvent();
   }
 }

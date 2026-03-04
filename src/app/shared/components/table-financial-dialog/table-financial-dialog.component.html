@@ -1,6 +1,7 @@
 <h2 mat-dialog-title>Registro Financeiro</h2>
 
 <mat-dialog-content>
+  <br>
   <div class="form-grid">
     <mat-form-field appearance="outline">
       <mat-label>Data</mat-label>
@@ -9,7 +10,12 @@
 
     <mat-form-field appearance="outline">
       <mat-label>Mês Sequencial</mat-label>
-      <input matInput type="number" [(ngModel)]="row.sequencial_month" />
+      <input
+        matInput
+        type="number"
+        [(ngModel)]="row.sequencial_month"
+        (ngModelChange)="calculateStartMonth()"
+      />
     </mat-form-field>
 
     <mat-form-field appearance="outline">
@@ -74,11 +80,7 @@
 
     <mat-form-field appearance="outline">
       <mat-label>Cotas compradas com provento</mat-label>
-      <input
-        matInput
-        type="number"
-        [(ngModel)]="row.purchased_quotas_proven"
-      />
+      <input matInput type="number" [(ngModel)]="row.purchased_quotas_proven" />
     </mat-form-field>
 
     <mat-form-field appearance="outline">
