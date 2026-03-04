@@ -11,16 +11,11 @@ import { TableCreateDialogComponent } from '../../shared/components/table-create
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [
-    CommonModule,
-    TableFinancialComponent,
-    MaterialModule,
-  ],
+  imports: [CommonModule, TableFinancialComponent, MaterialModule],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent implements OnInit {
-
   tables: Table[] = [];
   selectedTable?: Table;
 
@@ -30,19 +25,15 @@ export class DashboardComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-
     const storedTables = localStorage.getItem('financial_tables');
 
     if (storedTables) {
-
       const parsed = JSON.parse(storedTables);
 
       this.tables = parsed.map((t: any) => new Table().transform(t));
 
       sessionStorage.setItem('tables', JSON.stringify(this.tables));
-
     } else {
-
       const defaultTable = this.createDefaultTable();
 
       this.tables = [defaultTable];
@@ -91,11 +82,10 @@ export class DashboardComponent implements OnInit {
   addTable() {
     const dialogRef = this.dialog.open(TableCreateDialogComponent, {
       width: '500px',
-      maxWidth: '95vw'
+      maxWidth: '95vw',
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-
+    dialogRef.afterClosed().subscribe((result) => {
       if (!result) return;
 
       const newTable = new Table(
@@ -115,7 +105,5 @@ export class DashboardComponent implements OnInit {
 
       this.financialService.updateTable(this.tables);
     });
-
   }
-
 }

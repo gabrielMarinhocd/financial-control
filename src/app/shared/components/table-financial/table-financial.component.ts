@@ -189,4 +189,19 @@ export class TableFinancialComponent
   isEditing(row: DataTable): boolean {
     return this.isAdding && row === this.newRow;
   }
+
+  getAccumulatedTooltip(row: any): string {
+    const start = row.quotas_start_month || 0;
+    const purchased = row.purchased_quotas || 0;
+    const proven = row.purchased_quotas_proven || 0;
+    const price = row.quotas_value || 0;
+
+    const totalQuotas = start + purchased + proven;
+    const total = totalQuotas * price;
+
+    return `
+  (${start} + ${purchased} + ${proven}) × ${price.toFixed(2)}
+  = ${total.toFixed(2)}
+  `;
+  }
 }
