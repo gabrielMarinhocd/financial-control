@@ -6,16 +6,16 @@ import {
   ViewChild,
   AfterViewInit,
   OnInit,
+  HostListener,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-
+import { MatPaginator } from '@angular/material/paginator';
 import { DataTable } from '../../../models/data-table.model';
 import { Table } from '../../../models/table.model';
 import { MaterialModule } from '../../material/material.module';
-import { MatPaginator } from '@angular/material/paginator';
 import { FinancialService } from '../../../core/services/financial.service';
 import { MatDialog } from '@angular/material/dialog';
 import { TableFinancialDialogComponent } from '../table-financial-dialog/table-financial-dialog.component';
@@ -38,6 +38,7 @@ export class TableFinancialComponent
   implements OnChanges, AfterViewInit, OnInit
 {
   @Input() data: Table = new Table();
+
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
@@ -65,16 +66,18 @@ export class TableFinancialComponent
 
   isAdding = false;
   newRow!: DataTable;
+
   isMobile: boolean = false;
+
   simulationActive: boolean = false;
 
   constructor(
     private financialService: FinancialService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
   ) {}
 
-  ngOnInit() {
-    this.onCheckMobile();
+  ngOnInit(): void {
+    this.checkMobile();
 
     if (this.data?.data) {
       this.dataSource.data = [...this.data.data];
@@ -96,32 +99,39 @@ export class TableFinancialComponent
   }
 
   ngAfterViewInit(): void {
+    this.applyTableFeatures();
+  }
+
+  applyTableFeatures(): void {
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
-  
+
     this.dataSource.sortingDataAccessor = (
       item: DataTable,
-      property: string
+      property: string,
     ) => {
       if (property === 'date') {
         return item.date ? new Date(item.date).getTime() : 0;
       }
+
       return (item as any)[property];
     };
   }
 
+  @HostListener('window:resize')
+  checkMobile(): void {
+    this.isMobile = window.innerWidth <= 768;
+  }
+
   loadQuote(): void {
-    this.financialService.getQuote(this.data.name!).then((result: any) => {
+    if (!this.data?.name) return;
+
+    this.financialService.getQuote(this.data.name).then((result: any) => {
       this.quote = {
         price: result?.regularMarketPrice || 0,
         dividend: result?.regularMarketChange || 0,
       };
     });
-  }
-
-  onCheckMobile(event?: any) {
-    const width = event?.target?.innerWidth || window.innerWidth;
-    this.isMobile = width <= 768;
   }
 
   private updateTables(): void {
@@ -149,14 +159,16 @@ export class TableFinancialComponent
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        this.data.data = this.data.data || [];
-        this.data.data.push(result);
+      if (!result) return;
 
-        this.updateTables();
+      this.data.data = this.data.data || [];
+      this.data.data.push(result);
 
-        this.dataSource.data = [...this.data.data];
-      }
+      this.updateTables();
+
+      this.dataSource.data = [...this.data.data];
+
+      this.applyTableFeatures();
     });
   }
 
@@ -171,17 +183,17 @@ export class TableFinancialComponent
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        const index = this.data.data!.findIndex((r) => r.id === row.id);
+      if (!result) return;
 
-        if (index !== -1) {
-          this.data.data![index] = result;
-        }
+      const index = this.data.data!.findIndex((r) => r.id === row.id);
 
-        this.updateTables();
-
-        this.dataSource.data = [...this.data.data!];
+      if (index !== -1) {
+        this.data.data![index] = result;
       }
+
+      this.updateTables();
+
+      this.dataSource.data = [...this.data.data!];
     });
   }
 
@@ -193,14 +205,6 @@ export class TableFinancialComponent
     this.dataSource.data = [...this.data.data!];
   }
 
-  cancel(): void {
-    this.isAdding = false;
-  }
-
-  isEditing(row: DataTable): boolean {
-    return this.isAdding && row === this.newRow;
-  }
-
   getAccumulatedTooltip(row: any): string {
     const start = row.quotas_start_month || 0;
     const purchased = row.purchased_quotas || 0;
@@ -208,12 +212,12 @@ export class TableFinancialComponent
     const price = row.quotas_value || 0;
 
     const totalQuotas = start + purchased + proven;
+
     const total = totalQuotas * price;
 
-    return `
-  (${start} + ${purchased} + ${proven}) × ${price.toFixed(2)}
-  = ${total.toFixed(2)}
-  `;
+    return `(${start} + ${purchased} + ${proven}) × ${price.toFixed(
+      2,
+    )} = ${total.toFixed(2)}`;
   }
 
   simulate(): void {
@@ -221,7 +225,7 @@ export class TableFinancialComponent
       TableFinancialSimulationDialogComponent,
       {
         width: '400px',
-      }
+      },
     );
 
     dialogRef.afterClosed().subscribe((config) => {
@@ -242,14 +246,11 @@ export class TableFinancialComponent
 
     const last = this.data.data[this.data.data.length - 1];
 
-    let quotas =
-      (last.quotas_start_month || 0) +
-      (last.purchased_quotas || 0) +
-      (last.purchased_quotas_proven || 0);
+    let quotas = last.quotas_start_month || 0;
 
     const dividend = last.unit_proven || 0;
 
-    const price: number = config.useCurrentPrice
+    const price = config.useCurrentPrice
       ? this.quote.price || 1
       : last.quotas_value || 1;
 
@@ -257,7 +258,6 @@ export class TableFinancialComponent
       const quotasPurchased =
         (config.quotasPerMonth || 0) + (config.increment || 0) * (i - 1);
 
-      // compra mensal entra primeiro
       quotas += quotasPurchased;
 
       const monthDividend = quotas * dividend;
@@ -277,7 +277,7 @@ export class TableFinancialComponent
         quotasFromDividend,
         quotasFromDividend * price,
         quotas * price,
-        1
+        1,
       );
 
       result.push(row);
@@ -291,5 +291,48 @@ export class TableFinancialComponent
   clearSimulation(): void {
     this.dataSource.data = [...(this.data.data || [])];
     this.simulationActive = false;
+  }
+
+  get totalQuotas(): number {
+    if (!this.dataSource.data?.length) return 0;
+
+    const last = this.dataSource.data[this.dataSource.data.length - 1];
+
+    return (
+      (last.quotas_start_month || 0) +
+      (last.purchased_quotas || 0) +
+      (last.purchased_quotas_proven || 0)
+    );
+  }
+
+  get totalValue(): number {
+    if (!this.dataSource.data?.length) return 0;
+
+    const last = this.dataSource.data[this.dataSource.data.length - 1];
+
+    return last.accumulated_value_month || 0;
+  }
+
+  get averagePrice(): number {
+    if (!this.dataSource.data?.length) return 0;
+
+    const totalInvested = this.dataSource.data.reduce(
+      (sum, r) => sum + (r.value_purchased_quotas || 0),
+      0,
+    );
+
+    const quotas = this.totalQuotas;
+
+    if (!quotas) return 0;
+
+    return totalInvested / quotas;
+  }
+
+  get maxSequencialMonth(): number {
+    if (!this.dataSource.data?.length) return 0;
+
+    return Math.max(
+      ...this.dataSource.data.map((r) => r.sequencial_month || 0),
+    );
   }
 }

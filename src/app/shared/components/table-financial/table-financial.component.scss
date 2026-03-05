@@ -1,165 +1,104 @@
-/* ===== HEADER CARD ===== */
-mat-card-header {
-  display: flex;
-  align-items: center;
+.container {
+  padding: 16px;
 }
 
-.spacer {
-  flex: 1 1 auto;
-}
-
-.financial-card {
-  margin-bottom: 16px;
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
-  font-size: 0.9rem;
-}
-
-/* ===== HEADER FINANCEIRO ===== */
 .financial-header {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  padding: 0.5rem 0;
+  align-items: center;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 12px;
 }
 
 .financial-title {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  margin-left: 20px;
-  text-transform: uppercase;
+  gap: 4px;
 }
 
 .financial-title .title {
-  font-size: 1.6rem;
-  font-weight: 600;
-  line-height: 1.2;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  line-height: 1;
 }
 
-.quote {
-  font-size: 1rem;
-  font-weight: 500;
-  margin-top: 4px;
-}
-
+.quote,
 .dividend {
-  font-size: 0.9rem;
-  color: #2e7d32;
-  margin-top: 2px;
+  font-size: 14px;
+  opacity: 0.8;
 }
 
-.separator {
-  margin: 0 0.3rem;
-  color: rgba(0, 0, 0, 0.6);
-}
-
-/* ===== BOTÕES HEADER ===== */
 .financial-actions {
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
-/* padroniza TODOS mini-fab */
-button[mat-mini-fab] {
-  width: 32px;
-  height: 32px;
-  min-width: 32px;
-  line-height: 32px;
-  font-size: 18px;
+.financial-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 16px;
+  margin-bottom: 16px;
 }
 
-/* ===== TABELA ===== */
-.mat-table {
-  width: 100%;
-  min-width: 1200px;
+.summary-item {
+  padding: 16px;
+  border-radius: 8px;
+  background: var(--mat-sys-surface);
+  border: 1px solid rgba(0, 0, 0, 0.08);
 }
 
-.mat-header-cell {
-  font-weight: 600;
+.summary-item .label {
   font-size: 12px;
-  white-space: nowrap;
+  opacity: 0.7;
 }
 
-.mat-cell {
+.summary-item .value {
+  font-size: 20px;
+  font-weight: 600;
+  margin-top: 4px;
+}
+
+table {
+  width: 100%;
+}
+
+.mat-mdc-header-cell {
+  font-weight: 600;
   font-size: 13px;
-  white-space: nowrap;
 }
 
-tr.mat-row:hover {
-  background: #f5f5f5;
+.mat-mdc-cell {
+  font-size: 13px;
+}
+
+.mat-mdc-row:hover {
+  background: rgba(0, 0, 0, 0.04);
 }
 
 .mat-elevation-z8 {
-  overflow-x: auto;
+  border-radius: 8px;
+  overflow: hidden;
 }
 
-/* ===== CAMPOS COMPACTOS ===== */
-.compact-field {
-  width: 60px;
-  margin: 0;
-  --mdc-outlined-text-field-container-height: 22px;
+mat-paginator {
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
 }
 
-.compact-field .mat-mdc-form-field-wrapper,
-.compact-field .mat-mdc-form-field-flex,
-.compact-field .mat-mdc-form-field-infix {
-  padding: 0 !important;
-  margin: 0 !important;
-  min-height: unset !important;
-  height: 22px !important;
-  align-items: center !important;
-}
-
-.compact-field input.mat-mdc-input-element {
-  padding: 0 2px !important;
-  margin: 0 !important;
-  height: 20px !important;
-  font-size: 11px;
-  line-height: 1;
-  text-align: right;
-}
-
-.compact-field .mat-mdc-select-trigger {
-  padding: 0 2px !important;
-  font-size: 11px;
-  height: 20px !important;
-  line-height: 1;
-  text-align: right;
-}
-
-.compact-field .mat-mdc-form-field-subscript-wrapper {
-  display: none !important;
-}
-
-/* ===== MOBILE ===== */
 @media (max-width: 768px) {
-  .compact-field {
-    width: 50px;
-    --mdc-outlined-text-field-container-height: 20px;
+  .financial-header {
+    flex-direction: column;
+    align-items: flex-start;
   }
 
-  .mat-header-cell,
-  .mat-cell {
-    font-size: 11px;
+  .financial-actions {
+    width: 100%;
+    justify-content: flex-end;
   }
 
-  .compact-field input.mat-mdc-input-element,
-  .compact-field .mat-mdc-select-trigger {
-    font-size: 10px;
-    height: 18px;
-  }
-
-  .financial-title .title {
-    font-size: 1.2rem;
-  }
-
-  .quote {
-    font-size: 0.9rem;
-  }
-
-  .dividend {
-    font-size: 0.8rem;
+  .summary-item .value {
+    font-size: 18px;
   }
 }
