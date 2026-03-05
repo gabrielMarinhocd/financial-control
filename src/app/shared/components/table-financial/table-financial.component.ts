@@ -353,7 +353,7 @@ export class TableFinancialComponent
 
     return totalInvested / totalQuotasPurchased;
   }
-  
+
   get maxSequencialMonth(): number {
     if (!this.dataSource.data?.length) return 0;
 
@@ -376,5 +376,14 @@ export class TableFinancialComponent
     const prov = row.purchased_quotas_proven || 0;
 
     return `${start} + ${purchased} + ${prov} = ${start + purchased + prov}`;
+  }
+
+  get totalDividends(): number {
+    if (!this.dataSource.data?.length) return 0;
+
+    return this.dataSource.data.reduce(
+      (sum, row) => sum + (row.month_value_provent || 0),
+      0,
+    );
   }
 }
