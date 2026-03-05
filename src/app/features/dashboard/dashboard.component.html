@@ -1,12 +1,17 @@
-<mat-sidenav-container class="sidenav-container">
+<mat-sidenav-container class="sidenav-container" [hasBackdrop]="isMobile">
+  
   <!-- MENU -->
-  <mat-sidenav #drawer mode="side" opened>
-    <h3 class="menu-title">Tabelas</h3>
+  <mat-sidenav
+    #drawer
+    [mode]="isMobile ? 'over' : 'side'"
+    [opened]="!isMobile"
+  >
+    <h3 class="menu-title">Fundos e Ações</h3>
 
     <mat-nav-list>
       <mat-list-item
         *ngFor="let table of tables"
-        (click)="selectTable(table)"
+        (click)="selectTable(table); drawer.close()"
         class="menu-item"
       >
         {{ table.name }}
@@ -16,8 +21,10 @@
 
   <!-- CONTEÚDO -->
   <mat-sidenav-content>
+
     <mat-toolbar color="primary">
       <div class="toolbar-content">
+
         <div class="toolbar-left">
           <button mat-icon-button (click)="drawer.toggle()">
             <mat-icon>menu</mat-icon>
@@ -34,15 +41,23 @@
             Nova Tabela
           </button>
         </div>
+
       </div>
     </mat-toolbar>
 
     <div class="container">
-      <mat-card class="financial-card mat-elevation-z4" *ngIf="selectedTable">
+      <mat-card
+        class="financial-card mat-elevation-z4"
+        *ngIf="selectedTable"
+      >
         <mat-card-content>
-          <app-table-financial [data]="selectedTable"> </app-table-financial>
+          <app-table-financial
+            [data]="selectedTable">
+          </app-table-financial>
         </mat-card-content>
       </mat-card>
     </div>
+
   </mat-sidenav-content>
+
 </mat-sidenav-container>

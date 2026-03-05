@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TableFinancialComponent } from '../../shared/components/table-financial/table-financial.component';
 import { DataTable } from '../../models/data-table.model';
@@ -18,6 +18,7 @@ import { TableCreateDialogComponent } from '../../shared/components/table-create
 export class DashboardComponent implements OnInit {
   tables: Table[] = [];
   selectedTable?: Table;
+  isMobile = false;
 
   constructor(
     private financialService: FinancialService,
@@ -25,6 +26,8 @@ export class DashboardComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.checkScreen();
+
     const storedTables = localStorage.getItem('financial_tables');
 
     if (storedTables) {
@@ -46,6 +49,15 @@ export class DashboardComponent implements OnInit {
     if (this.tables.length > 0) {
       this.selectedTable = this.tables[0];
     }
+  }
+
+  @HostListener('window:resize')
+  onResize() {
+    this.checkScreen();
+  }
+
+  checkScreen() {
+    this.isMobile = window.innerWidth <= 768;
   }
 
   selectTable(table: Table) {
