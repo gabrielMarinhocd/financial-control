@@ -62,6 +62,7 @@ export class TableFinancialComponent
     'purchased_quotas_proven',
     'value_purchased_quotas_proven',
     'accumulated_value_month',
+    'total_quotas',
   ];
 
   isAdding = false;
@@ -246,7 +247,10 @@ export class TableFinancialComponent
 
     const last = this.data.data[this.data.data.length - 1];
 
-    let quotas = last.quotas_start_month || 0;
+    let quotas =
+      (last.quotas_start_month || 0) +
+      (last.purchased_quotas || 0) +
+      (last.purchased_quotas_proven || 0);
 
     const dividend = last.unit_proven || 0;
 
@@ -258,17 +262,21 @@ export class TableFinancialComponent
       const quotasPurchased =
         (config.quotasPerMonth || 0) + (config.increment || 0) * (i - 1);
 
+      const quotasStartMonth = quotas;
+
       quotas += quotasPurchased;
 
       const monthDividend = quotas * dividend;
 
       const quotasFromDividend = Math.floor(monthDividend / price);
 
+      const accumulatedValue = (quotas + quotasFromDividend) * price;
+
       const row = new DataTable(
         Date.now() + i,
         '',
         (last.sequencial_month || 0) + i,
-        quotas,
+        quotasStartMonth,
         price,
         dividend,
         quotasPurchased,
@@ -276,7 +284,7 @@ export class TableFinancialComponent
         monthDividend,
         quotasFromDividend,
         quotasFromDividend * price,
-        quotas * price,
+        accumulatedValue,
         1,
       );
 
@@ -316,23 +324,57 @@ export class TableFinancialComponent
   get averagePrice(): number {
     if (!this.dataSource.data?.length) return 0;
 
-    const totalInvested = this.dataSource.data.reduce(
-      (sum, r) => sum + (r.value_purchased_quotas || 0),
-      0,
-    );
+    let totalInvested = 0;
+    let totalQuotasPurchased = 0;
 
-    const quotas = this.totalQuotas;
+    this.dataSource.data.forEach((row, index) => {
+      const price = row.quotas_value || 0;
 
-    if (!quotas) return 0;
+      const purchased = row.purchased_quotas || 0;
+      const purchasedValue = row.value_purchased_quotas || 0;
 
-    return totalInvested / quotas;
+      const dividendQuotas = row.purchased_quotas_proven || 0;
+      const dividendValue = row.value_purchased_quotas_proven || 0;
+
+      let rowInvested = purchasedValue + dividendValue;
+      let rowQuotas = purchased + dividendQuotas;
+
+      if (index === 0) {
+        const initialQuotas = row.quotas_start_month || 0;
+        rowInvested += initialQuotas * price;
+        rowQuotas += initialQuotas;
+      }
+
+      totalInvested += rowInvested;
+      totalQuotasPurchased += rowQuotas;
+    });
+
+    if (!totalQuotasPurchased) return 0;
+
+    return totalInvested / totalQuotasPurchased;
   }
-
+  
   get maxSequencialMonth(): number {
     if (!this.dataSource.data?.length) return 0;
 
     return Math.max(
       ...this.dataSource.data.map((r) => r.sequencial_month || 0),
     );
+  }
+
+  getTotalQuotasRow(row: DataTable): number {
+    return (
+      (row.quotas_start_month || 0) +
+      (row.purchased_quotas || 0) +
+      (row.purchased_quotas_proven || 0)
+    );
+  }
+
+  getTotalQuotasTooltip(row: DataTable): string {
+    const start = row.quotas_start_month || 0;
+    const purchased = row.purchased_quotas || 0;
+    const prov = row.purchased_quotas_proven || 0;
+
+    return `${start} + ${purchased} + ${prov} = ${start + purchased + prov}`;
   }
 }
