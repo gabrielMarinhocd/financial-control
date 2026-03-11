@@ -2,6 +2,7 @@
 
 <mat-dialog-content>
   <mat-tab-group>
+    
     <!-- TAB AJUSTES -->
     <mat-tab label="Ajustes Gerais">
       <div class="tab-content">
@@ -9,14 +10,43 @@
       </div>
     </mat-tab>
 
+    
     <!-- TAB DADOS -->
     <mat-tab label="Dados">
-      <div class="tab-content">
-        <button mat-raised-button color="primary">Importar</button>
+      <div class="tab-content actions">
 
-        <button mat-raised-button color="accent">Exportar</button>
+        <button
+          mat-raised-button
+          color="primary"
+          class="action-button"
+          (click)="importData()"
+        >
+          <mat-icon>upload</mat-icon>
+          Importar
+        </button>
+
+        <button
+          mat-raised-button
+          color="accent"
+          class="action-button"
+          (click)="exportData()"
+        >
+          <mat-icon>download</mat-icon>
+          Exportar
+        </button>
+
+        <!-- input escondido -->
+        <input
+          type="file"
+          #fileInput
+          accept=".json"
+          (change)="handleFile($event)"
+          hidden
+        />
+
       </div>
     </mat-tab>
+
   </mat-tab-group>
 </mat-dialog-content>
 

@@ -120,7 +120,7 @@ export class DashboardComponent implements OnInit {
 
   openConfig() {
     this.dialog.open(ConfigDialogComponent, {
-      width: '600px',
+      width: '900px',
       maxWidth: '95vw',
     });
   }
