@@ -7,6 +7,7 @@ import { Table } from '../../models/table.model';
 import { FinancialService } from '../../core/services/financial.service';
 import { MatDialog } from '@angular/material/dialog';
 import { TableCreateDialogComponent } from '../../shared/components/table-create-dialog/table-create-dialog.component';
+import { ConfigDialogComponent } from '../../shared/components/config-dialog/config-dialog.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -118,6 +119,9 @@ export class DashboardComponent implements OnInit {
   }
 
   openConfig() {
-    alert('Funcionalidade ainda não implementada.');
+    this.dialog.open(ConfigDialogComponent, {
+      width: '600px',
+      maxWidth: '95vw',
+    });
   }
 }
