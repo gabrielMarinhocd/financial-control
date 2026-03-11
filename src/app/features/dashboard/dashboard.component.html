@@ -29,9 +29,23 @@
         </div>
 
         <div class="toolbar-right">
-          <button mat-raised-button color="accent" (click)="addTable()">
+          <!-- BOTÃO CONFIGURAÇÕES -->
+          <button
+            mat-icon-button
+            (click)="openConfig()"
+            matTooltip="Configurações"
+          >
+            <mat-icon>settings</mat-icon>
+          </button>
+
+          <!-- BOTÃO NOVA TABELA -->
+          <button
+            mat-icon-button
+            color="accent"
+            (click)="addTable()"
+            matTooltip="Nova Tabela"
+          >
             <mat-icon>add</mat-icon>
-            Nova Tabela
           </button>
         </div>
       </div>
@@ -40,7 +54,7 @@
     <div class="container">
       <mat-card class="financial-card mat-elevation-z4" *ngIf="selectedTable">
         <mat-card-content>
-          <app-table-financial [data]="selectedTable"> </app-table-financial>
+          <app-table-financial [data]="selectedTable"></app-table-financial>
         </mat-card-content>
       </mat-card>
     </div>

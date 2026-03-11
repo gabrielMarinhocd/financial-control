@@ -49,6 +49,11 @@ mat-toolbar {
   align-items: center;
 }
 
+.toolbar-right button[color="accent"] {
+  background-color: #607d8b;
+  color: white;
+}
+
 .toolbar-title {
   font-size: 18px;
   font-weight: 600;

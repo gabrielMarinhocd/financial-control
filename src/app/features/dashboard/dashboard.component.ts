@@ -110,12 +110,14 @@ export class DashboardComponent implements OnInit {
       );
 
       this.tables.push(newTable);
-
       this.selectedTable = newTable;
 
       sessionStorage.setItem('tables', JSON.stringify(this.tables));
-
       this.financialService.updateTable(this.tables);
     });
+  }
+
+  openConfig() {
+    alert('Funcionalidade ainda não implementada.');
   }
 }
