@@ -57,12 +57,12 @@
   ],
   "screenshots": [
     {
-      "src": "https://github.com/gabrielMarinhocd/financial-control/blob/main/src/assets/screen-home-mobile.png",
+      "src": "https://raw.githubusercontent.com/gabrielMarinhocd/financial-control/refs/heads/main/src/assets/screen-home-mobile.png",
       "sizes": "1080x2400",
       "type": "image/png"
     },
     {
-      "src": "https://github.com/gabrielMarinhocd/financial-control/blob/main/src/assets/screen-home-desktop.png",
+      "src": "https://raw.githubusercontent.com/gabrielMarinhocd/financial-control/refs/heads/main/src/assets/screen-home-desktop.png",
       "sizes": "1919x872",
       "type": "image/png",
       "form_factor": "wide"
