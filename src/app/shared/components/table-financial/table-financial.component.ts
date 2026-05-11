@@ -20,6 +20,7 @@ import { FinancialService } from '../../../core/services/financial.service';
 import { MatDialog } from '@angular/material/dialog';
 import { TableFinancialDialogComponent } from '../table-financial-dialog/table-financial-dialog.component';
 import { TableFinancialSimulationDialogComponent } from '../table-financial-simulation-dialog/table-financial-simulation-dialog.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-table-financial',
@@ -75,6 +76,7 @@ export class TableFinancialComponent
   constructor(
     private financialService: FinancialService,
     private dialog: MatDialog,
+    private snackBar: MatSnackBar,
   ) {}
 
   ngOnInit(): void {
@@ -226,6 +228,9 @@ export class TableFinancialComponent
       TableFinancialSimulationDialogComponent,
       {
         width: '400px',
+        data: {
+          list: this.data.data,
+        },
       },
     );
 
@@ -243,16 +248,48 @@ export class TableFinancialComponent
   simulateData(config: any): DataTable[] {
     const result: DataTable[] = [];
 
-    if (!this.data.data?.length) return result;
+    let last: DataTable;
+    let hasInitialData = true;
 
-    const last = this.data.data[this.data.data.length - 1];
+    if (!this.data.data?.length) {
+      hasInitialData = false;
+
+      // 👇 alerta
+      this.snackBar.open(
+        'Simulação sem histórico: não foi possível recuperar o valor dos proventos.',
+        'OK',
+        {
+          duration: 4000,
+          panelClass: ['snackbar-warning'],
+        },
+      );
+
+      // 👇 base inicial
+      last = new DataTable(
+        Date.now(),
+        '',
+        0,
+        0,
+        this.quote.price || 1,
+        0, // 👈 sem provento
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+      );
+    } else {
+      last = this.data.data[this.data.data.length - 1];
+    }
 
     let quotas =
       (last.quotas_start_month || 0) +
       (last.purchased_quotas || 0) +
       (last.purchased_quotas_proven || 0);
 
-    const dividend = last.unit_proven || 0;
+    const dividend = config.unitProvent ?? last.unit_proven ?? 0;
 
     const price = config.useCurrentPrice
       ? this.quote.price || 1

@@ -19,6 +19,7 @@
 
   <div style="margin-top: 20px">
     <label>Valor da cota</label>
+    <br>
 
     <mat-radio-group [(ngModel)]="useCurrentPrice">
       <mat-radio-button [value]="true"> Usar valor atual </mat-radio-button>
@@ -30,6 +31,18 @@
       </mat-radio-button>
     </mat-radio-group>
   </div>
+
+  <br>
+  <mat-form-field appearance="outline" style="width: 100%; margin-top: 10px">
+    <mat-label>Provento por cota (R$)</mat-label>
+    <input
+      matInput
+      type="number"
+      [(ngModel)]="unitProvent"
+      min="0"
+      step="0.01"
+    />
+  </mat-form-field>
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
