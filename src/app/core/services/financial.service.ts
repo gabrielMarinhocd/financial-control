@@ -9,7 +9,7 @@ export class FinancialService {
   async getQuote(ticker: string): Promise<number | null> {
     try {
       const response = await fetch(
-        `https://brapi.dev/api/quote/${ticker}?token=${environment.brapiToken}`
+        `https://brapi.dev/api/quote/${ticker}?token=${environment.brapiToken}`,
       );
 
       const data = await response.json();
@@ -43,5 +43,19 @@ export class FinancialService {
 
   getTables(): any {
     return localStorage.getItem('financial_tables');
+  }
+
+  deleteTable(id: number): Table[] {
+    const stored = localStorage.getItem('financial_tables');
+    if (!stored) return [];
+
+    const data: Table[] = JSON.parse(stored);
+
+    const filtered = data.filter((t) => t.id !== id);
+
+    localStorage.setItem('financial_tables', JSON.stringify(filtered));
+    sessionStorage.setItem('tables', JSON.stringify(filtered));
+
+    return filtered;
   }
 }
