@@ -68,3 +68,22 @@ mat-list-item:hover {
   background: rgba(0, 0, 0, 0.45);
   backdrop-filter: blur(2px);
 }
+
+.menu-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.menu-text {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.menu-actions {
+  display: flex;
+  gap: 4px;
+}

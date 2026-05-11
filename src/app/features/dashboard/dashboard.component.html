@@ -9,24 +9,29 @@
         (click)="selectTable(table); drawer.close()"
         class="menu-item"
       >
-        {{ table.name }}
-        <button
-          mat-icon-button
-          color="primary"
-          matTooltip="Editar registro"
-          matTooltipPosition="above"
-        >
-          <mat-icon>edit</mat-icon>
-        </button>
-        <button
-          mat-icon-button
-          color="warn"
-          matTooltip="Excluir registro"
-          matTooltipPosition="above"
-          (click)="openDeleteDialog(table); $event.stopPropagation()"
-        >
-          <mat-icon>delete</mat-icon>
-        </button>
+        <div class="menu-content">
+          <span class="menu-text">{{ table.name }}</span>
+
+          <div class="menu-actions">
+            <button
+              mat-icon-button
+              color="primary"
+              matTooltip="Editar tabela"
+              (click)="openEditDialog(table); $event.stopPropagation()"
+            >
+              <mat-icon>edit</mat-icon>
+            </button>
+
+            <button
+              mat-icon-button
+              color="warn"
+              matTooltip="Excluir registro"
+              (click)="openDeleteDialog(table); $event.stopPropagation()"
+            >
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </div>
       </mat-list-item>
     </mat-nav-list>
   </mat-sidenav>

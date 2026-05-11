@@ -10,6 +10,7 @@ import { TableCreateDialogComponent } from '../../shared/components/table-create
 import { ConfigDialogComponent } from '../../shared/components/config-dialog/config-dialog.component';
 import { ConfirmDialogComponent } from '../../shared/components/confirm-dialog/confirm-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { TableEditDialogComponent } from '../../shared/components/table-edit-name-dialog/table-edit-name-dialog.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -160,6 +161,30 @@ export class DashboardComponent implements OnInit {
           panelClass: ['snackbar-success'],
         });
       }
+    });
+  }
+
+  openEditDialog(table: Table) {
+    const dialogRef = this.dialog.open(TableEditDialogComponent, {
+      width: '400px',
+      data: { ...table }, 
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (!result) return;
+
+      const index = this.tables.findIndex((t) => t.id === table.id);
+      if (index === -1) return;
+
+      this.tables[index].name = result.name;
+      this.tables[index].describe = result.description;
+
+      this.financialService.updateTable(this.tables);
+
+      this.snackBar.open('Tabela atualizada!', 'OK', {
+        duration: 3000,
+        panelClass: ['snackbar-success'],
+      });
     });
   }
 }
