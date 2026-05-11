@@ -54,5 +54,18 @@
       "type": "image/png",
       "purpose": "maskable any"
     }
+  ],
+  "screenshots": [
+    {
+      "src": "assets/screens/screen-home-mobile.png",
+      "sizes": "1080x2400",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/screens/screen-home-desktop.png",
+      "sizes": "1919x872",
+      "type": "image/png",
+      "form_factor": "wide"
+    }
   ]
 }
