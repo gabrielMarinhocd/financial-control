@@ -1,39 +1,73 @@
 <mat-sidenav-container class="sidenav-container" [hasBackdrop]="isMobile">
   <!-- MENU -->
-  <mat-sidenav #drawer [mode]="isMobile ? 'over' : 'side'" [opened]="!isMobile">
-    <h3 class="menu-title">Fundos e Ações</h3>
+  <mat-sidenav
+    #drawer
+    [mode]="isMobile ? 'over' : 'side'"
+    [opened]="!isMobile"
+    class="sidenav"
+  >
+    <div class="sidenav-content">
+      <h3 class="menu-title">Fundos e Ações</h3>
 
-    <mat-nav-list>
-      <mat-list-item
-        *ngFor="let table of tables"
-        (click)="selectTable(table); drawer.close()"
-        class="menu-item"
-      >
-        <div class="menu-content">
-          <span class="menu-text">{{ table.name }}</span>
+      <mat-nav-list>
+        <mat-list-item
+          *ngFor="let table of tables"
+          (click)="selectTable(table); drawer.close()"
+          class="menu-item"
+        >
+          <div class="menu-content">
+            <span class="menu-text">{{ table.name }}</span>
 
-          <div class="menu-actions">
-            <button
-              mat-icon-button
-              color="primary"
-              matTooltip="Editar tabela"
-              (click)="openEditDialog(table); $event.stopPropagation()"
+            <div class="menu-actions">
+              <button
+                mat-icon-button
+                color="primary"
+                matTooltip="Editar Tabela"
+                (click)="openEditDialog(table); $event.stopPropagation()"
+              >
+                <mat-icon>edit</mat-icon>
+              </button>
+
+              <button
+                mat-icon-button
+                color="warn"
+                matTooltip="Deletar Tabela"
+                (click)="openDeleteDialog(table); $event.stopPropagation()"
+              >
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </div>
+        </mat-list-item>
+      </mat-nav-list>
+
+      <!-- FOOTER FIXO -->
+      <div class="menu-footer">
+        <mat-divider></mat-divider>
+
+        <div class="dev-info">
+          <span class="dev-name">Dev. Gabriel M. Santos</span>
+
+          <div class="dev-links">
+            <a
+              href="https://gabrielmsantos.com.br"
+              target="_blank"
+              matTooltip="Acessar site"
             >
-              <mat-icon>edit</mat-icon>
-            </button>
+              <mat-icon>language</mat-icon>
+            </a>
 
-            <button
-              mat-icon-button
-              color="warn"
-              matTooltip="Excluir registro"
-              (click)="openDeleteDialog(table); $event.stopPropagation()"
+            <a
+              href="https://github.com/gabrielMarinhocd/financial-control"
+              target="_blank"
+              matTooltip="Repositório no GitHub"
             >
-              <mat-icon>delete</mat-icon>
-            </button>
+              <mat-icon>code</mat-icon>
+            </a>
           </div>
         </div>
-      </mat-list-item>
-    </mat-nav-list>
+      </div>
+    </div>
   </mat-sidenav>
 
   <!-- CONTEÚDO -->
@@ -51,7 +85,6 @@
         </div>
 
         <div class="toolbar-right">
-          <!-- BOTÃO CONFIGURAÇÕES -->
           <button
             mat-icon-button
             (click)="openConfig()"
@@ -60,7 +93,6 @@
             <mat-icon>settings</mat-icon>
           </button>
 
-          <!-- BOTÃO NOVA TABELA -->
           <button
             mat-icon-button
             color="accent"

@@ -10,6 +10,21 @@ mat-sidenav {
   border-right: 1px solid rgba(255, 255, 255, 0.05);
 }
 
+.sidenav-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+mat-nav-list {
+  flex: 1;
+}
+
+.menu-footer {
+  margin-top: auto;
+  padding: 16px 12px;
+}
+
 .menu-title {
   padding: 16px;
   font-weight: 600;
@@ -60,15 +75,6 @@ mat-toolbar {
   margin-left: 5px;
 }
 
-mat-list-item:hover {
-  background: rgba(255, 255, 255, 0.05);
-}
-
-::ng-deep .mat-drawer-backdrop.mat-drawer-shown {
-  background: rgba(0, 0, 0, 0.45);
-  backdrop-filter: blur(2px);
-}
-
 .menu-content {
   display: flex;
   align-items: center;
@@ -86,4 +92,38 @@ mat-list-item:hover {
 .menu-actions {
   display: flex;
   gap: 4px;
+}
+
+.dev-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.dev-name {
+  font-size: 13px;
+  opacity: 0.7;
+  margin-bottom: 8px;
+}
+
+.dev-links {
+  display: flex;
+  gap: 12px;
+}
+
+.dev-links a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.dev-links mat-icon {
+  font-size: 22px;
+  opacity: 0.8;
+  transition: 0.2s;
+}
+
+.dev-links mat-icon:hover {
+  opacity: 1;
+  transform: scale(1.15);
 }
