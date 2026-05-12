@@ -78,7 +78,7 @@ export class DashboardComponent implements OnInit {
           20.8,
           2,
           18.8,
-          1955.2,
+          2143.20,
           1,
         ),
       ],

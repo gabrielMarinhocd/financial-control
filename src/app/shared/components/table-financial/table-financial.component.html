@@ -8,7 +8,7 @@
     <div class="quote" *ngIf="quote">
       Valor atual: {{ quote.price | currency : "BRL" }}
     </div>
-<!-- 
+    <!-- 
     <div class="dividend" *ngIf="quote">
       Dividendo: {{ quote.dividend | currency : "BRL" }}
     </div> -->
@@ -44,8 +44,9 @@
       (click)="clearSimulation()"
       matTooltip="Limpar simulação"
       matTooltipPosition="above"
+      [disabled]="!simulationActive"
     >
-      <mat-icon>refresh</mat-icon>
+      <mat-icon>clear</mat-icon>
     </button>
   </div>
 </div>

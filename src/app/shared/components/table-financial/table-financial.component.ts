@@ -76,7 +76,7 @@ export class TableFinancialComponent
   constructor(
     private financialService: FinancialService,
     private dialog: MatDialog,
-    private snackBar: MatSnackBar,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -96,6 +96,7 @@ export class TableFinancialComponent
       this.dataSource.data = this.data.data ?? [];
 
       if (this.data?.name) {
+        this.simulationActive = false;
         this.loadQuote();
       }
     }
@@ -111,7 +112,7 @@ export class TableFinancialComponent
 
     this.dataSource.sortingDataAccessor = (
       item: DataTable,
-      property: string,
+      property: string
     ) => {
       if (property === 'date') {
         return item.date ? new Date(item.date).getTime() : 0;
@@ -219,7 +220,7 @@ export class TableFinancialComponent
     const total = totalQuotas * price;
 
     return `(${start} + ${purchased} + ${proven}) × ${price.toFixed(
-      2,
+      2
     )} = ${total.toFixed(2)}`;
   }
 
@@ -231,7 +232,7 @@ export class TableFinancialComponent
         data: {
           list: this.data.data,
         },
-      },
+      }
     );
 
     dialogRef.afterClosed().subscribe((config) => {
@@ -261,7 +262,7 @@ export class TableFinancialComponent
         {
           duration: 4000,
           panelClass: ['snackbar-warning'],
-        },
+        }
       );
 
       // 👇 base inicial
@@ -278,7 +279,7 @@ export class TableFinancialComponent
         0,
         0,
         0,
-        1,
+        1
       );
     } else {
       last = this.data.data[this.data.data.length - 1];
@@ -322,7 +323,7 @@ export class TableFinancialComponent
         quotasFromDividend,
         quotasFromDividend * price,
         accumulatedValue,
-        1,
+        1
       );
 
       result.push(row);
@@ -395,7 +396,7 @@ export class TableFinancialComponent
     if (!this.dataSource.data?.length) return 0;
 
     return Math.max(
-      ...this.dataSource.data.map((r) => r.sequencial_month || 0),
+      ...this.dataSource.data.map((r) => r.sequencial_month || 0)
     );
   }
 
@@ -420,7 +421,7 @@ export class TableFinancialComponent
 
     return this.dataSource.data.reduce(
       (sum, row) => sum + (row.month_value_provent || 0),
-      0,
+      0
     );
   }
 }
