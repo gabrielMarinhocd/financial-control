@@ -23,10 +23,30 @@ Console do projeto no Firebase:
 - 📈 Visualização de dados financeiros
 - 💰 Monitoramento de valores e ativos
 - 🔄 Atualização dinâmica de informações
-- 📱 Interface responsiva
+- 🧮 Simulação de valores financeiros
+- 📱 Interface responsiva (desktop e mobile)
+- 📲 Instalação como aplicativo (PWA)
 - ☁️ Hospedagem em nuvem com Firebase
 
 ---
+
+# 📱 PWA (Progressive Web App)
+
+O sistema pode ser instalado como um aplicativo no seu dispositivo:
+
+- Instalação direta pelo navegador
+- Acesso rápido pela tela inicial
+- Experiência similar a app nativo
+- Cache de recursos para melhor desempenho
+
+# 🧮 Simulação de Valores
+
+A aplicação permite realizar simulações financeiras, possibilitando:
+
+- Inserção de valores simulados
+- Visualização integrada com os dados reais
+- Comparação de cenários
+- Limpeza da simulação com um clique
 
 # 🛠️ Tecnologias Utilizadas
 
@@ -37,6 +57,7 @@ Console do projeto no Firebase:
 - HTML5
 - CSS3
 - Firebase Hosting
+- Service Workers (PWA)
 
 ---
 
@@ -51,3 +72,20 @@ Este projeto foi gerado com **Angular CLI 17.3.17**.
 Execute:
 
 ```bash
+http://localhost:4200/ 
+```
+# 🚀 Build para produção
+```bash
+ng build --configuration production
+```
+
+# 📌 Observações
+- O PWA funciona apenas em ambiente de produção (build)
+- Para testar instalação do app, utilize o projeto hospedado ou build local com servidor
+
+# 👨‍💻 Desenvolvedor
+
+*Gabriel M. Santos*
+
+- 🌐 https://gabrielmsantos.com.br
+- 💻 https://github.com/gabrielMarinhocd
