@@ -1,1 +1,12 @@
 <router-outlet></router-outlet>
+
+<button
+  mat-icon-button
+  *ngIf="deferredPrompt && !isInstalled"
+  color="accent"
+  matTooltip="Instalar APP"
+  class="pwa-btn"
+  (click)="installPWA()"
+>
+  <mat-icon>download</mat-icon>
+</button>
