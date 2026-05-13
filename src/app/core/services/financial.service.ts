@@ -58,4 +58,28 @@ export class FinancialService {
 
     return filtered;
   }
+
+  async getDividends(ticker: string): Promise<any[]> {
+    try {
+      const url = `https://api-financial-control-9skh.onrender.com/dividends?ticker=${ticker}`;
+  
+      const response = await fetch(url);
+      const data = await response.json();
+  
+      if (!Array.isArray(data)) return [];
+  
+      const dividends = data.map((d: any) => ({
+        date: new Date(d.date),
+        value: d.value,
+      }));
+  
+      dividends.sort((a, b) => a.date.getTime() - b.date.getTime());
+  
+      return dividends;
+  
+    } catch (error) {
+      console.error('Erro ao buscar dividendos', error);
+      return [];
+    }
+  }
 }

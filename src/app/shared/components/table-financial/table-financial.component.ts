@@ -48,6 +48,7 @@ export class TableFinancialComponent
   quote = {
     price: 0,
     dividend: 0,
+    dateDividend: null as Date | null,
   };
 
   displayedColumns: string[] = [
@@ -133,9 +134,38 @@ export class TableFinancialComponent
     this.financialService.getQuote(this.data.name).then((result: any) => {
       this.quote = {
         price: result?.regularMarketPrice || 0,
-        dividend: result?.regularMarketChange || 0,
+        dividend: this.quote?.dividend || 0,
+        dateDividend: this.quote?.dateDividend || null,
       };
     });
+
+    this.financialService
+      .getDividends(this.data.name)
+      .then((dividends: any[]) => {
+        const ultimoDividendo = dividends.length
+          ? dividends[dividends.length - 1]
+          : null;
+
+        this.data.lastDividend = ultimoDividendo?.value || 0;
+        this.data.dateLastDividend = ultimoDividendo?.date
+          ? new Date(ultimoDividendo.date)
+          : undefined;
+
+        this.quote.dividend = ultimoDividendo?.value || 0;
+        this.quote.dateDividend = this.data.dateLastDividend ?? null;
+
+        const stored = JSON.parse(
+          localStorage.getItem('financial_tables') || '[]'
+        );
+
+        const index = stored.findIndex((t: any) => t.name === this.data.name);
+
+        if (index !== -1) {
+          stored[index] = this.data;
+        }
+
+        this.financialService.updateTable(stored);
+      });
   }
 
   private updateTables(): void {

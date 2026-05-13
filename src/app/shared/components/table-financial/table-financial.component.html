@@ -6,12 +6,15 @@
     </div>
 
     <div class="quote" *ngIf="quote">
-      Valor atual: {{ quote.price | currency : "BRL" }}
+      <span *ngIf="quote"
+        >Valor atual: {{ quote.price | currency : "BRL" }}</span
+      >
+      |
+      <span *ngIf="quote">
+        Dividendo: {{ quote.dividend | currency : "BRL" }} -
+        {{ quote.dateDividend | date : "MM/yyyy" }}
+      </span>
     </div>
-    <!-- 
-    <div class="dividend" *ngIf="quote">
-      Dividendo: {{ quote.dividend | currency : "BRL" }}
-    </div> -->
   </div>
 
   <div class="financial-actions">

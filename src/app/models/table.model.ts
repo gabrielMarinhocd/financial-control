@@ -1,3 +1,4 @@
+import { Data } from "@angular/router";
 import { DataTable } from "./data-table.model";
 
 export class Table {
@@ -7,7 +8,9 @@ export class Table {
       public describe?: string,
       public colums?: string[],
       public data?: DataTable[],
-      public active?: number
+      public active?: number,
+      public lastDividend?: number,
+      public dateLastDividend?: Date
     ) {}
   
     transform(dados: any): Table {
@@ -18,6 +21,8 @@ export class Table {
         this.colums = dados.colums;
         this.active = dados.active;
         this.data = dados.data;
+        this.lastDividend = dados.lastDividend;
+        this.dateLastDividend= dados.dateLastDividend;
       }
       return this;
     }
