@@ -58,6 +58,7 @@ A aplicação permite realizar simulações financeiras, possibilitando:
 - CSS3
 - Firebase Hosting
 - Service Workers (PWA)
+- Yahoo Finance
 
 ---
 
