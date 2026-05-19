@@ -21,6 +21,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { TableFinancialDialogComponent } from '../table-financial-dialog/table-financial-dialog.component';
 import { TableFinancialSimulationDialogComponent } from '../table-financial-simulation-dialog/table-financial-simulation-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { HttpService } from '../../../core/services/http.service';
 
 @Component({
   selector: 'app-table-financial',
@@ -76,6 +77,7 @@ export class TableFinancialComponent
 
   constructor(
     private financialService: FinancialService,
+    private httpService: HttpService,
     private dialog: MatDialog,
     private snackBar: MatSnackBar,
   ) {}
@@ -111,9 +113,8 @@ export class TableFinancialComponent
       item: DataTable,
       property: string,
     ) => {
-      if (property === 'date') {
+      if (property === 'date')
         return item.date ? new Date(item.date).getTime() : 0;
-      }
 
       return (item as any)[property];
     };
@@ -127,7 +128,7 @@ export class TableFinancialComponent
   loadQuote(): void {
     if (!this.data?.name) return;
 
-    this.financialService.getQuote(this.data.name).then((result: any) => {
+    this.httpService.getQuote(this.data.name).subscribe((result: any) => {
       this.quote = {
         price: result?.regularMarketPrice || 0,
         dividend: this.quote?.dividend || 0,
@@ -135,9 +136,9 @@ export class TableFinancialComponent
       };
     });
 
-    this.financialService
+    this.httpService
       .getDividends(this.data.name)
-      .then((dividends: any[]) => {
+      .subscribe((dividends: any[]) => {
         const ultimoDividendo = dividends.length
           ? dividends[dividends.length - 1]
           : null;
@@ -155,10 +156,7 @@ export class TableFinancialComponent
         );
 
         const index = stored.findIndex((t: any) => t.name === this.data.name);
-
-        if (index !== -1) {
-          stored[index] = this.data;
-        }
+        if (index !== -1) stored[index] = this.data;
 
         this.financialService.updateTable(stored);
       });
@@ -169,9 +167,7 @@ export class TableFinancialComponent
 
     const index = tables.findIndex((t: any) => t.name === this.data.name);
 
-    if (index !== -1) {
-      tables[index] = this.data;
-    }
+    if (index !== -1) tables[index] = this.data;
 
     sessionStorage.setItem('tables', JSON.stringify(tables));
 
