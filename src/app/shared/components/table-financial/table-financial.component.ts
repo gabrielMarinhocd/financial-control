@@ -77,19 +77,15 @@ export class TableFinancialComponent
   constructor(
     private financialService: FinancialService,
     private dialog: MatDialog,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
   ) {}
 
   ngOnInit(): void {
     this.checkMobile();
 
-    if (this.data?.data) {
-      this.dataSource.data = [...this.data.data];
-    }
+    if (this.data?.data) this.dataSource.data = [...this.data.data];
 
-    if (this.data?.name) {
-      this.loadQuote();
-    }
+    if (this.data?.name) this.loadQuote();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -113,7 +109,7 @@ export class TableFinancialComponent
 
     this.dataSource.sortingDataAccessor = (
       item: DataTable,
-      property: string
+      property: string,
     ) => {
       if (property === 'date') {
         return item.date ? new Date(item.date).getTime() : 0;
@@ -155,7 +151,7 @@ export class TableFinancialComponent
         this.quote.dateDividend = this.data.dateLastDividend ?? null;
 
         const stored = JSON.parse(
-          localStorage.getItem('financial_tables') || '[]'
+          localStorage.getItem('financial_tables') || '[]',
         );
 
         const index = stored.findIndex((t: any) => t.name === this.data.name);
@@ -221,9 +217,7 @@ export class TableFinancialComponent
 
       const index = this.data.data!.findIndex((r) => r.id === row.id);
 
-      if (index !== -1) {
-        this.data.data![index] = result;
-      }
+      if (index !== -1) this.data.data![index] = result;
 
       this.updateTables();
 
@@ -250,7 +244,7 @@ export class TableFinancialComponent
     const total = totalQuotas * price;
 
     return `(${start} + ${purchased} + ${proven}) × ${price.toFixed(
-      2
+      2,
     )} = ${total.toFixed(2)}`;
   }
 
@@ -262,7 +256,7 @@ export class TableFinancialComponent
         data: {
           list: this.data.data,
         },
-      }
+      },
     );
 
     dialogRef.afterClosed().subscribe((config) => {
@@ -285,31 +279,29 @@ export class TableFinancialComponent
     if (!this.data.data?.length) {
       hasInitialData = false;
 
-      // 👇 alerta
       this.snackBar.open(
         'Simulação sem histórico: não foi possível recuperar o valor dos proventos.',
         'OK',
         {
           duration: 4000,
           panelClass: ['snackbar-warning'],
-        }
+        },
       );
 
-      // 👇 base inicial
       last = new DataTable(
         Date.now(),
         '',
         0,
         0,
         this.quote.price || 1,
-        0, // 👈 sem provento
         0,
         0,
         0,
         0,
         0,
         0,
-        1
+        0,
+        1,
       );
     } else {
       last = this.data.data[this.data.data.length - 1];
@@ -334,7 +326,7 @@ export class TableFinancialComponent
 
       quotas += quotasPurchased;
 
-      const monthDividend = quotas * dividend;
+      const monthDividend = quotasStartMonth * dividend;
 
       const quotasFromDividend = Math.floor(monthDividend / price);
 
@@ -353,7 +345,7 @@ export class TableFinancialComponent
         quotasFromDividend,
         quotasFromDividend * price,
         accumulatedValue,
-        1
+        1,
       );
 
       result.push(row);
@@ -426,7 +418,7 @@ export class TableFinancialComponent
     if (!this.dataSource.data?.length) return 0;
 
     return Math.max(
-      ...this.dataSource.data.map((r) => r.sequencial_month || 0)
+      ...this.dataSource.data.map((r) => r.sequencial_month || 0),
     );
   }
 
@@ -451,7 +443,16 @@ export class TableFinancialComponent
 
     return this.dataSource.data.reduce(
       (sum, row) => sum + (row.month_value_provent || 0),
-      0
+      0,
     );
+  }
+
+  getDividendTooltip(row: DataTable): string {
+    const start = row.quotas_start_month || 0;
+    const dividend = row.unit_proven || 0;
+
+    const total = start * dividend;
+
+    return `${start} cota(s) × R$ ${dividend.toFixed(2)} = R$ ${total.toFixed(2)}`;
   }
 }

@@ -1,21 +1,19 @@
 import { Injectable } from '@angular/core';
 import { Table } from '../../models/table.model';
-import { environment } from '../../../env/environment.prod';
 
 @Injectable({
   providedIn: 'root',
 })
 export class FinancialService {
-  async getQuote(ticker: string): Promise<number | null> {
+  async getQuote(ticker: string): Promise<any | null> {
     try {
       const response = await fetch(
-        `https://brapi.dev/api/quote/${ticker}?token=${environment.brapiToken}`,
+        `https://api-financial-control-9skh.onrender.com/quote?ticker=${ticker}`,
       );
 
       const data = await response.json();
 
-      return data?.results?.[0] || null;
-      return null;
+      return data || null;
     } catch (error) {
       console.error('Erro ao consultar cotação', error);
       return null;
@@ -62,21 +60,20 @@ export class FinancialService {
   async getDividends(ticker: string): Promise<any[]> {
     try {
       const url = `https://api-financial-control-9skh.onrender.com/dividends?ticker=${ticker}`;
-  
+
       const response = await fetch(url);
       const data = await response.json();
-  
+
       if (!Array.isArray(data)) return [];
-  
+
       const dividends = data.map((d: any) => ({
         date: new Date(d.date),
         value: d.value,
       }));
-  
+
       dividends.sort((a, b) => a.date.getTime() - b.date.getTime());
-  
+
       return dividends;
-  
     } catch (error) {
       console.error('Erro ao buscar dividendos', error);
       return [];

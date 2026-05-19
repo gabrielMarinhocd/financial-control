@@ -7,12 +7,12 @@
 
     <div class="quote" *ngIf="quote">
       <span *ngIf="quote"
-        >Valor atual: {{ quote.price | currency : "BRL" }}</span
+        >Valor atual: {{ quote.price | currency: "BRL" }}</span
       >
       |
       <span *ngIf="quote">
-        Dividendo: {{ quote.dividend | currency : "BRL" }} -
-        {{ quote.dateDividend | date : "MM/yyyy" }}
+        Dividendo: {{ quote.dividend | currency: "BRL" }} -
+        {{ quote.dateDividend | date: "MM/yyyy" }}
       </span>
     </div>
   </div>
@@ -66,21 +66,21 @@
   <div class="summary-item">
     <div class="label">Valor total</div>
     <div class="value">
-      {{ totalValue | currency : "BRL" }}
+      {{ totalValue | currency: "BRL" }}
     </div>
   </div>
 
   <div class="summary-item">
     <div class="label">Preço médio</div>
     <div class="value">
-      {{ averagePrice | currency : "BRL" }}
+      {{ averagePrice | currency: "BRL" }}
     </div>
   </div>
 
   <div class="summary-item">
     <div class="label">Total de dividendos recebidos</div>
     <div class="value">
-      {{ totalDividends | currency : "BRL" }}
+      {{ totalDividends | currency: "BRL" }}
     </div>
   </div>
 </div>
@@ -122,7 +122,7 @@
         <th mat-header-cell *matHeaderCellDef mat-sort-header="date">Data</th>
 
         <td mat-cell *matCellDef="let row">
-          {{ row.date ? (row.date | date : "dd/MM/yyyy") : "-" }}
+          {{ row.date ? (row.date | date: "dd/MM/yyyy") : "-" }}
         </td>
       </ng-container>
 
@@ -163,7 +163,7 @@
         </th>
 
         <td mat-cell *matCellDef="let row">
-          {{ row.quotas_value || 0 | currency : "BRL" }}
+          {{ row.quotas_value || 0 | currency: "BRL" }}
         </td>
       </ng-container>
 
@@ -193,7 +193,7 @@
         </th>
 
         <td mat-cell *matCellDef="let row">
-          {{ row.value_purchased_quotas || 0 | currency : "BRL" }}
+          {{ row.value_purchased_quotas || 0 | currency: "BRL" }}
         </td>
       </ng-container>
 
@@ -204,11 +204,12 @@
         </th>
 
         <td mat-cell *matCellDef="let row">
-          {{ row.unit_proven || 0 | currency : "BRL" }}
+          {{ row.unit_proven || 0 | currency: "BRL" }}
         </td>
       </ng-container>
 
       <!-- PROVENTO MES -->
+
       <ng-container matColumnDef="month_value_provent">
         <th
           mat-header-cell
@@ -218,8 +219,13 @@
           Provento Mês
         </th>
 
-        <td mat-cell *matCellDef="let row">
-          {{ row.month_value_provent || 0 | currency : "BRL" }}
+        <td
+          mat-cell
+          *matCellDef="let row"
+          [matTooltip]="getDividendTooltip(row)"
+          matTooltipPosition="above"
+        >
+          {{ row.month_value_provent | number: "1.2-2" }}
         </td>
       </ng-container>
 
@@ -249,7 +255,7 @@
         </th>
 
         <td mat-cell *matCellDef="let row">
-          {{ row.value_purchased_quotas_proven || 0 | currency : "BRL" }}
+          {{ row.value_purchased_quotas_proven || 0 | currency: "BRL" }}
         </td>
       </ng-container>
 
@@ -269,7 +275,7 @@
           [matTooltip]="getAccumulatedTooltip(row)"
           matTooltipPosition="above"
         >
-          {{ row.accumulated_value_month || 0 | currency : "BRL" }}
+          {{ row.accumulated_value_month || 0 | currency: "BRL" }}
         </td>
       </ng-container>
 
