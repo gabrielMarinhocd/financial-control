@@ -87,6 +87,19 @@
         <div class="toolbar-right">
           <button
             mat-icon-button
+            color="accent"
+            (click)="toggleRecording()"
+            [matTooltip]="
+              isRecording ? 'Parar gravação' : 'Pesquisar por áudio'
+            "
+          >
+            <mat-icon>
+              {{ isRecording ? "stop" : "mic" }}
+            </mat-icon>
+          </button>
+
+          <button
+            mat-icon-button
             (click)="openConfig()"
             matTooltip="Configurações"
           >

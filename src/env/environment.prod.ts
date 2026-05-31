@@ -1,4 +1,5 @@
 export const environment = {
-    production: true,
-    ulrApi: "http://localhost:3000"
-  };
+  production: true,
+  ulrApi: 'https://api-financial-control-9skh.onrender.com',
+  urlIaAPi: 'http://localhost:8080',
+};
