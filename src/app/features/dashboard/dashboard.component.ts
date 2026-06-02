@@ -17,7 +17,7 @@ import { TableCreateDialogComponent } from '../../shared/components/table-create
 import { ConfigDialogComponent } from '../../shared/components/config-dialog/config-dialog.component';
 import { ConfirmDialogComponent } from '../../shared/components/confirm-dialog/confirm-dialog.component';
 import { TableEditDialogComponent } from '../../shared/components/table-edit-name-dialog/table-edit-name-dialog.component';
-import { actions } from '../../core/services/handlers/handlers';
+import { actions } from '../../handlers/handlers';
 import { PromptActionFuncionalities } from '../../models/prompt-action-funcionalities';
 
 @Component({
@@ -120,10 +120,16 @@ export class DashboardComponent implements OnInit {
     );
   }
 
-  addTable() {
+  addTable(...parameters: any) {
+    const [name, description] = parameters[0];
+
     const dialogRef = this.dialog.open(TableCreateDialogComponent, {
       width: '500px',
       maxWidth: '95vw',
+      data: {
+        name: name,
+        description: description,
+      },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
@@ -139,15 +145,12 @@ export class DashboardComponent implements OnInit {
       );
 
       this.tables.push(newTable);
-
       this.selectedTable = newTable;
 
       sessionStorage.setItem('tables', JSON.stringify(this.tables));
-
       this.financialService.updateTable(this.tables);
     });
   }
-
   openConfig() {
     this.dialog.open(ConfigDialogComponent, {
       width: '900px',

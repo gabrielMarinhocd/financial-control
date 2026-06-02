@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import {
   MatDialogRef,
   MAT_DIALOG_DATA,
-  MatDialogModule
+  MatDialogModule,
 } from '@angular/material/dialog';
 
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -21,7 +21,7 @@ import { MatButtonModule } from '@angular/material/button';
     MatDialogModule,
     MatFormFieldModule,
     MatInputModule,
-    MatButtonModule
+    MatButtonModule,
   ],
   templateUrl: './table-create-dialog.component.html',
 })
@@ -32,7 +32,10 @@ export class TableCreateDialogComponent {
   constructor(
     private dialogRef: MatDialogRef<TableCreateDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
-  ) {}
+  ) {
+    this.name = data?.name || '';
+    this.description = data?.description || '';
+  }
 
   save() {
     if (!this.name.trim()) return;
