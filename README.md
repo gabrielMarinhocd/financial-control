@@ -12,10 +12,6 @@ Acesse a aplicação pelo link:
 
 🔗 https://financial-control-ce878.web.app
 
-Console do projeto no Firebase:
-
-🔗 https://console.firebase.google.com/project/financial-control-ce878/overview
-
 ---
 
 # 📊 Funcionalidades
