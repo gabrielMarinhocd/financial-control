@@ -1,8 +1,16 @@
+
 # 💰 Financial Control
 
 Aplicação web para **controle financeiro pessoal**, permitindo registrar, visualizar e acompanhar informações financeiras de forma simples e organizada.
 
 O projeto foi desenvolvido utilizando **Angular** e hospedado no **Firebase Hosting**, permitindo acesso rápido e seguro pela web.
+
+<div style="align-items: center; text-align: center;">
+    <a href="https://www.youtube.com/watch?v=8ai1AkwCkY8" target="_blank" rel="noopener noreferrer">
+      <img height="300px" width="500px"
+        src="https://github.com/gabrielMarinhocd/financial-control/blob/main/src/assets/foto-apresentacao-financial-control.jpg" alt="Video" />
+    </a>
+  </div>
 
 ---
 
