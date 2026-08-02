@@ -48,3 +48,7 @@ src/env/environment.prod.ts
 src/assets/financial-control.png
 .firebase/hosting.ZGlzdFxmaW5hbmNpYWwtY29udHJvbFxicm93c2Vy.cache
 /.git.bfg-report
+.scannerwork/.sonar_lock
+.scannerwork/report-task.txt
+/.vscode
+/.scannerwork
