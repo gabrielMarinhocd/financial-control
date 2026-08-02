@@ -88,6 +88,23 @@ ng build --configuration production
 - O PWA funciona apenas em ambiente de produção (build)
 - Para testar instalação do app, utilize o projeto hospedado ou build local com servidor
 
+## 🔍 Análise de qualidade com SonarQube 
+
+### Pré-requisitos - SonarQube em execução - SonarScanner instalado - Relatório de cobertura gerado pelo Angular
+
+### Gerar cobertura antes da análise 
+```bash ng test --watch=false --code-coverage ``` 
+
+### Executar análise
+ ``` bash sonar-scanner -Dsonar.projectKey=financial-control -Dsonar.projectName="Financial Control" -Dsonar.host.url=http://localhost:60000 -Dsonar.token=<TOKEN> -Dsonar.sources=src -Dsonar.tests=src -Dsonar.test.inclusions="**/*.spec.ts" -Dsonar.exclusions="**/*.spec.ts,**/node_modules/**" -Dsonar.javascript.lcov.reportPaths=coverage/financial-control/lcov.info```
+
+### O que é analisado
+- Bugs
+- Vulnerabilidades 
+- Code Smells 
+- Duplicação de código 
+- Cobertura de testes
+
 # 👨‍💻 Desenvolvedor
 
 *Gabriel M. Santos*
