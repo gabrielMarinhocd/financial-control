@@ -30,7 +30,7 @@ export class TableCreateDialogComponent {
   description: string = '';
 
   constructor(
-    private dialogRef: MatDialogRef<TableCreateDialogComponent>,
+    private readonly dialogRef: MatDialogRef<TableCreateDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {}
 

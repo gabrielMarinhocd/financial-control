@@ -21,7 +21,7 @@ export class TableFinancialSimulationDialogComponent implements OnInit {
   unitProvent: number = 0;
 
   constructor(
-    private dialogRef: MatDialogRef<TableFinancialSimulationDialogComponent>,
+    private readonly dialogRef: MatDialogRef<TableFinancialSimulationDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any 
   ) {}
 

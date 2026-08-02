@@ -43,10 +43,10 @@ export class DashboardComponent implements OnInit {
   private audioChunks: Blob[] = [];
 
   constructor(
-    private financialService: FinancialService,
-    private dialog: MatDialog,
-    private snackBar: MatSnackBar,
-    private httpService: HttpService
+    private readonly financialService: FinancialService,
+    private readonly dialog: MatDialog,
+    private readonly snackBar: MatSnackBar,
+    private readonly httpService: HttpService
   ) {}
 
   executar(nome: string) {

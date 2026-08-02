@@ -76,10 +76,10 @@ export class TableFinancialComponent
   simulationActive: boolean = false;
 
   constructor(
-    private financialService: FinancialService,
-    private httpService: HttpService,
-    private dialog: MatDialog,
-    private snackBar: MatSnackBar,
+    private readonly financialService: FinancialService,
+    private readonly httpService: HttpService,
+    private readonly dialog: MatDialog,
+    private readonly snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -111,7 +111,7 @@ export class TableFinancialComponent
 
     this.dataSource.sortingDataAccessor = (
       item: DataTable,
-      property: string,
+      property: string
     ) => {
       if (property === 'date')
         return item.date ? new Date(item.date).getTime() : 0;
@@ -152,7 +152,7 @@ export class TableFinancialComponent
         this.quote.dateDividend = this.data.dateLastDividend ?? null;
 
         const stored = JSON.parse(
-          localStorage.getItem('financial_tables') || '[]',
+          localStorage.getItem('financial_tables') || '[]'
         );
 
         const index = stored.findIndex((t: any) => t.name === this.data.name);
@@ -240,7 +240,7 @@ export class TableFinancialComponent
     const total = totalQuotas * price;
 
     return `(${start} + ${purchased} + ${proven}) × ${price.toFixed(
-      2,
+      2
     )} = ${total.toFixed(2)}`;
   }
 
@@ -252,7 +252,7 @@ export class TableFinancialComponent
         data: {
           list: this.data.data,
         },
-      },
+      }
     );
 
     dialogRef.afterClosed().subscribe((config) => {
@@ -281,7 +281,7 @@ export class TableFinancialComponent
         {
           duration: 4000,
           panelClass: ['snackbar-warning'],
-        },
+        }
       );
 
       last = new DataTable(
@@ -297,7 +297,7 @@ export class TableFinancialComponent
         0,
         0,
         0,
-        1,
+        1
       );
     } else {
       last = this.data.data[this.data.data.length - 1];
@@ -341,7 +341,7 @@ export class TableFinancialComponent
         quotasFromDividend,
         quotasFromDividend * price,
         accumulatedValue,
-        1,
+        1
       );
 
       result.push(row);
@@ -358,17 +358,15 @@ export class TableFinancialComponent
   }
 
   get totalQuotas(): number {
-    if (!this.dataSource.data?.length) return 0;
-
-    const last = this.dataSource.data[this.dataSource.data.length - 1];
+    const last = this.data.data?.at(-1);
 
     return (
-      (last.quotas_start_month || 0) +
-      (last.purchased_quotas || 0) +
-      (last.purchased_quotas_proven || 0)
+      (last?.quotas_start_month ?? 0) +
+      (last?.purchased_quotas ?? 0) +
+      (last?.purchased_quotas_proven ?? 0)
     );
   }
-
+  
   get totalValue(): number {
     if (!this.dataSource.data?.length) return 0;
 
@@ -414,7 +412,7 @@ export class TableFinancialComponent
     if (!this.dataSource.data?.length) return 0;
 
     return Math.max(
-      ...this.dataSource.data.map((r) => r.sequencial_month || 0),
+      ...this.dataSource.data.map((r) => r.sequencial_month || 0)
     );
   }
 
@@ -439,7 +437,7 @@ export class TableFinancialComponent
 
     return this.dataSource.data.reduce(
       (sum, row) => sum + (row.month_value_provent || 0),
-      0,
+      0
     );
   }
 
@@ -449,6 +447,8 @@ export class TableFinancialComponent
 
     const total = start * dividend;
 
-    return `${start} cota(s) × R$ ${dividend.toFixed(2)} = R$ ${total.toFixed(2)}`;
+    return `${start} cota(s) × R$ ${dividend.toFixed(2)} = R$ ${total.toFixed(
+      2
+    )}`;
   }
 }

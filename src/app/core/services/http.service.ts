@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../env/environment.prod';
@@ -10,7 +10,7 @@ import { PromptActionFuncionalities } from '../../models/prompt-action-funcional
 export class HttpService {
   apiPath: any = environment.ulrApi;
 
-  constructor(private http: HttpClient) {}
+  constructor(private readonly http: HttpClient) {}
 
   getQuote(ticker: string): Observable<any> {
     return this.http.get<any>(`${this.apiPath}/quote?ticker=${ticker}`);

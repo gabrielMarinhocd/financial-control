@@ -13,6 +13,9 @@
         <mat-list-item
           *ngFor="let table of tables"
           (click)="selectTable(table); drawer.close()"
+          (keydown.enter)="selectTable(table); drawer.close()"
+          (keydown.space)="selectTable(table); drawer.close()"
+          tabindex="0"
           class="menu-item"
         >
           <div class="menu-content">

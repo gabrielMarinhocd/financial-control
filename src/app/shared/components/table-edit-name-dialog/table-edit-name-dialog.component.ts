@@ -13,7 +13,7 @@ import { FormsModule } from '@angular/forms';
 })
 export class TableEditDialogComponent {
   constructor(
-    private dialogRef: MatDialogRef<TableEditDialogComponent>,
+    private readonly dialogRef: MatDialogRef<TableEditDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {}
 
